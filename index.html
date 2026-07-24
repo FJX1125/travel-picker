@@ -6,20 +6,11 @@
 <title>下一站去哪儿？- 智能旅行规划</title>
 <style>
 :root {
-  --bg: #f7f5f0;
-  --card: #fff;
-  --text: #2d2d2d;
-  --sub: #7a7a7a;
-  --border: #e8e6dc;
-  --yn: #e8633a;
-  --yn-light: #fdf2ed;
-  --yn-dark: #c44a28;
-  --gz: #2d8a6e;
-  --gz-light: #edf7f2;
-  --gz-dark: #1a6b52;
-  --gold: #f0a030;
-  --radius: 22px;
-  --radius-sm: 14px;
+  --bg: #f7f5f0; --card: #fff; --text: #2d2d2d; --sub: #7a7a7a; --border: #e8e6dc;
+  --yn: #e8633a; --yn-light: #fdf2ed; --yn-dark: #c44a28;
+  --gz: #2d8a6e; --gz-light: #edf7f2; --gz-dark: #1a6b52;
+  --gold: #f0a030; --eco: #2d8a6e; --premium: #e8633a;
+  --radius: 22px; --radius-sm: 14px;
   --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
   --shadow-md: 0 6px 24px rgba(0,0,0,0.08);
   --shadow-lg: 0 14px 48px rgba(0,0,0,0.12);
@@ -32,9 +23,8 @@ body{
   padding:16px 16px 60px;
   -webkit-font-smoothing:antialiased;
 }
-.container{width:100%;max-width:820px;display:flex;flex-direction:column;align-items:center}
+.container{width:100%;max-width:880px;display:flex;flex-direction:column;align-items:center}
 
-/* Header */
 .header{text-align:center;margin:20px 0 28px}
 .header h1{
   font-size:1.8rem;font-weight:800;letter-spacing:-0.03em;
@@ -43,7 +33,6 @@ body{
 }
 .header p{color:var(--sub);font-size:0.9rem;margin-top:6px}
 
-/* Spin Button - Large */
 .spin-btn{
   display:flex;align-items:center;gap:10px;
   padding:18px 48px;border-radius:60px;border:none;cursor:pointer;
@@ -54,85 +43,71 @@ body{
   margin-bottom:32px;letter-spacing:0.03em;
   position:relative;overflow:hidden;
 }
-.spin-btn::after{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(135deg,rgba(255,255,255,0.15),transparent);
-}
+.spin-btn::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.15),transparent)}
 .spin-btn:hover{transform:translateY(-3px);box-shadow:0 10px 36px rgba(232,99,58,0.5)}
 .spin-btn:active{transform:scale(0.96)}
 .spin-btn:disabled{opacity:0.5;cursor:not-allowed;transform:none;box-shadow:none}
 .spin-btn .btn-icon{font-size:1.6rem;display:inline-block}
 @keyframes diceRoll{
-  0%{transform:rotateY(0) scale(1)}
-  25%{transform:rotateY(180deg) scale(0.8)}
-  50%{transform:rotateY(360deg) scale(1.1)}
-  75%{transform:rotateY(540deg) scale(0.9)}
+  0%{transform:rotateY(0) scale(1)} 25%{transform:rotateY(180deg) scale(0.8)}
+  50%{transform:rotateY(360deg) scale(1.1)} 75%{transform:rotateY(540deg) scale(0.9)}
   100%{transform:rotateY(720deg) scale(1)}
 }
 .spin-btn.spinning .btn-icon{animation:diceRoll 0.9s ease-out}
 
-/* Slot Machine */
 .slot-area{
-  display:flex;gap:16px;justify-content:center;flex-wrap:wrap;
-  width:100%;margin-bottom:28px
+  display:flex;gap:16px;justify-content:center;flex-wrap:wrap;width:100%;margin-bottom:28px
 }
 .slot-card{
   flex:1 1 180px;max-width:260px;min-width:150px;
-  background:var(--card);border-radius:var(--radius);
-  padding:24px 18px;text-align:center;
-  border:2px solid var(--border);
-  transition:all 0.35s cubic-bezier(0.16,1,0.3,1);
-  cursor:default;position:relative;
+  background:var(--card);border-radius:var(--radius);padding:24px 18px;
+  text-align:center;border:2px solid var(--border);
+  transition:all 0.35s cubic-bezier(0.16,1,0.3,1);cursor:default;position:relative;
 }
-.slot-card .slot-label{
-  font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;
-  color:var(--sub);margin-bottom:8px;font-weight:700;
-}
-.slot-card .slot-value{
-  font-size:1.4rem;font-weight:800;margin-bottom:4px;
-  transition:all 0.2s;
-}
+.slot-card .slot-label{font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--sub);margin-bottom:8px;font-weight:700}
+.slot-card .slot-value{font-size:1.4rem;font-weight:800;margin-bottom:4px;transition:all 0.2s}
 .slot-card .slot-emoji{font-size:2.2rem;display:block;margin-bottom:6px}
 @keyframes slotShake{
-  0%,100%{transform:translateY(0)}
-  15%{transform:translateY(-6px)}
-  30%{transform:translateY(6px)}
-  45%{transform:translateY(-3px)}
-  60%{transform:translateY(3px)}
-  75%{transform:translateY(-1px)}
+  0%,100%{transform:translateY(0)} 15%{transform:translateY(-6px)} 30%{transform:translateY(6px)}
+  45%{transform:translateY(-3px)} 60%{transform:translateY(3px)} 75%{transform:translateY(-1px)}
 }
 .slot-card.shaking{animation:slotShake 0.6s ease-in-out}
 
-/* Result Card */
 .result-card{
-  background:var(--card);border-radius:var(--radius);
-  padding:0;width:100%;box-shadow:var(--shadow-md);
-  border:1px solid var(--border);
-  overflow:hidden;
-  animation:fadeSlideIn 0.5s cubic-bezier(0.16,1,0.3,1) both;
+  background:var(--card);border-radius:var(--radius);padding:0;
+  width:100%;box-shadow:var(--shadow-md);border:1px solid var(--border);
+  overflow:hidden;animation:fadeSlideIn 0.5s cubic-bezier(0.16,1,0.3,1) both;
+  margin-bottom:20px;
 }
 @keyframes fadeSlideIn{
-  from{opacity:0;transform:translateY(24px)}
-  to{opacity:1;transform:translateY(0)}
+  from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)}
 }
 .result-banner{
-  padding:22px 24px;display:flex;align-items:center;gap:14px;
-  color:#fff;
+  padding:22px 24px;display:flex;align-items:center;gap:14px;color:#fff;
 }
 .result-banner.yn-bg{background:linear-gradient(135deg,#e8633a,#d44a2a)}
 .result-banner.gz-bg{background:linear-gradient(135deg,#2d8a6e,#1a6b52)}
 .result-banner .rb-icon{font-size:2.6rem}
 .result-banner .rb-info h2{font-size:1.4rem;font-weight:800;letter-spacing:-0.02em}
 .result-banner .rb-info .rb-tags{display:flex;gap:6px;margin-top:4px;flex-wrap:wrap}
-.rb-tag{
-  font-size:0.72rem;padding:3px 10px;border-radius:20px;
-  background:rgba(255,255,255,0.2);backdrop-filter:blur(4px);
-  font-weight:600;
-}
-
+.rb-tag{font-size:0.72rem;padding:3px 10px;border-radius:20px;background:rgba(255,255,255,0.2);backdrop-filter:blur(4px);font-weight:600}
 .result-body{padding:24px}
 
-/* Section Title */
+/* Tab switcher */
+.tab-switcher{
+  display:flex;gap:0;margin-bottom:20px;background:#f0ede6;border-radius:var(--radius-sm);padding:4px;
+}
+.tab-btn{
+  flex:1;padding:12px;border:none;cursor:pointer;font-size:0.9rem;font-weight:700;
+  border-radius:12px;transition:all 0.3s cubic-bezier(0.16,1,0.3,1);
+  background:transparent;color:var(--sub);display:flex;align-items:center;justify-content:center;gap:6px;
+}
+.tab-btn.active{background:var(--card);color:var(--text);box-shadow:var(--shadow-sm)}
+.tab-btn.eco-tab.active{color:var(--eco)}
+.tab-btn.premium-tab.active{color:var(--premium)}
+.tab-content{display:none}
+.tab-content.active{display:block}
+
 .section-title{
   font-size:0.78rem;font-weight:800;text-transform:uppercase;
   letter-spacing:0.06em;color:var(--sub);
@@ -140,84 +115,90 @@ body{
 }
 .section-title::after{content:'';flex:1;height:1px;background:var(--border)}
 
-/* Transport Info */
 .transport-bar{
-  display:flex;align-items:center;gap:12px;
-  background:#fafaf8;border-radius:var(--radius-sm);
-  padding:16px 20px;margin-bottom:20px;
-  border:1px solid var(--border);
+  display:flex;align-items:center;gap:12px;background:#fafaf8;
+  border-radius:var(--radius-sm);padding:16px 20px;margin-bottom:20px;border:1px solid var(--border);
 }
 .transport-bar .tb-icon{font-size:1.8rem}
 .transport-bar .tb-details h4{font-size:0.9rem;font-weight:700;margin-bottom:3px}
 .transport-bar .tb-details p{font-size:0.78rem;color:var(--sub)}
 
-/* Attraction Grid */
 .attr-grid{
-  display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));
-  gap:12px;margin-bottom:20px;
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));
+  gap:10px;margin-bottom:20px;
 }
 .attr-item{
-  background:#fafaf8;border-radius:var(--radius-sm);padding:14px;
+  background:#fafaf8;border-radius:var(--radius-sm);padding:12px;
   border:1px solid var(--border);transition:all 0.2s;
 }
 .attr-item:hover{transform:translateY(-2px);box-shadow:var(--shadow-sm);border-color:#ccc}
 .attr-rank{
   display:inline-flex;align-items:center;justify-content:center;
-  width:24px;height:24px;border-radius:50%;font-size:0.7rem;
-  font-weight:800;color:#fff;margin-bottom:8px;
+  width:22px;height:22px;border-radius:50%;font-size:0.65rem;font-weight:800;color:#fff;margin-bottom:6px;
 }
 .attr-rank.r1{background:linear-gradient(135deg,#f5a623,#e8961a)}
 .attr-rank.r2{background:linear-gradient(135deg,#a0a0a0,#808080)}
 .attr-rank.r3{background:linear-gradient(135deg,#c8945c,#a87840)}
-.attr-name{font-weight:700;font-size:0.9rem;margin-bottom:3px}
-.attr-desc{font-size:0.75rem;color:var(--sub);line-height:1.4}
-.attr-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
-.attr-tags span{
-  font-size:0.65rem;padding:2px 7px;border-radius:10px;font-weight:600;
-}
+.attr-name{font-weight:700;font-size:0.85rem;margin-bottom:2px}
+.attr-desc{font-size:0.72rem;color:var(--sub);line-height:1.4}
+.attr-tags{display:flex;flex-wrap:wrap;gap:3px;margin-top:6px}
+.attr-tags span{font-size:0.62rem;padding:2px 6px;border-radius:8px;font-weight:600}
 .yn-theme .attr-tags span{background:var(--yn-light);color:var(--yn-dark)}
 .gz-theme .attr-tags span{background:var(--gz-light);color:var(--gz-dark)}
 
-/* Itinerary */
-.itinerary{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+.itinerary{display:flex;flex-direction:column;gap:8px;margin-bottom:20px}
 .it-day{
-  display:flex;gap:14px;align-items:flex-start;
-  background:#fafaf8;border-radius:var(--radius-sm);padding:16px;
-  border:1px solid var(--border);
+  display:flex;gap:12px;align-items:flex-start;
+  background:#fafaf8;border-radius:var(--radius-sm);padding:14px;border:1px solid var(--border);
 }
 .it-day-num{
-  min-width:42px;height:42px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  font-weight:800;font-size:0.85rem;color:#fff;flex-shrink:0;
+  min-width:36px;height:36px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-weight:800;font-size:0.78rem;color:#fff;flex-shrink:0;
 }
 .yn-theme .it-day-num{background:var(--yn)}
 .gz-theme .it-day-num{background:var(--gz)}
-.it-day-content h5{font-size:0.9rem;font-weight:700;margin-bottom:4px}
-.it-day-content p{font-size:0.78rem;color:var(--sub);line-height:1.5}
-.it-day-content .it-meal{font-size:0.7rem;color:var(--sub);margin-top:4px;font-style:italic}
+.it-day-content h5{font-size:0.85rem;font-weight:700;margin-bottom:3px}
+.it-day-content p{font-size:0.75rem;color:var(--sub);line-height:1.5}
 
-/* Budget */
-.budget-grid{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
-  gap:10px;margin-bottom:12px;
+/* Budget dual columns */
+.budget-dual{
+  display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:12px;
 }
-.budget-item{
-  background:#fafaf8;border-radius:var(--radius-sm);padding:16px;
-  text-align:center;border:1px solid var(--border);
+@media(max-width:600px){.budget-dual{grid-template-columns:1fr}}
+.budget-plan{
+  background:#fafaf8;border-radius:var(--radius-sm);overflow:hidden;border:1px solid var(--border);
 }
-.budget-item .bi-amount{font-size:1.3rem;font-weight:800;letter-spacing:-0.02em}
-.budget-item .bi-label{font-size:0.72rem;color:var(--sub);margin-top:4px}
-.yn-theme .bi-amount{color:var(--yn)}
-.gz-theme .bi-amount{color:var(--gz)}
-.budget-total{
-  background:linear-gradient(135deg,#fef9f5,#f8f4ef);
-  border-radius:var(--radius-sm);padding:18px 24px;text-align:center;
-  border:2px solid var(--gold);
+.budget-plan-header{
+  padding:14px 16px;color:#fff;display:flex;align-items:center;gap:8px;
+  font-weight:800;font-size:0.9rem;
 }
-.budget-total .bt-label{font-size:0.78rem;color:var(--sub);font-weight:700;text-transform:uppercase;letter-spacing:0.06em}
-.budget-total .bt-amount{font-size:2rem;font-weight:800;color:var(--gold);margin-top:4px}
+.budget-plan-header.eco{background:linear-gradient(135deg,#2d8a6e,#1a6b52)}
+.budget-plan-header.premium{background:linear-gradient(135deg,#e8633a,#c44a28)}
+.budget-plan-body{padding:14px 16px}
+.budget-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:8px 0;border-bottom:1px solid #eee;
+}
+.budget-row:last-child{border-bottom:none}
+.budget-row .br-label{font-size:0.78rem;color:var(--sub)}
+.budget-row .br-value{font-size:0.85rem;font-weight:700;text-align:right}
+.budget-row .br-detail{font-size:0.68rem;color:var(--sub);text-align:right;margin-top:1px}
+.budget-plan-total{
+  padding:12px 16px;text-align:center;font-size:1.3rem;font-weight:800;
+  border-top:2px dashed #e0dcd0;
+}
+.budget-plan.eco-plan .budget-plan-total{color:var(--eco);background:linear-gradient(180deg,#f7faf8,#f0f5f2)}
+.budget-plan.premium-plan .budget-plan-total{color:var(--premium);background:linear-gradient(180deg,#fef9f6,#fdf3ed)}
 
-/* Empty state */
+/* Comparison bar */
+.comparison-bar{
+  display:flex;align-items:center;gap:12px;margin:16px 0;padding:14px 18px;
+  background:linear-gradient(135deg,#fefdf9,#f8f6ef);border-radius:var(--radius-sm);
+  border:1px solid var(--border);font-size:0.82rem;
+}
+.comparison-bar .cb-icon{font-size:1.5rem}
+.comparison-bar .cb-text{color:var(--sub);line-height:1.5}
+
 .empty-state{
   text-align:center;padding:48px 20px;color:var(--sub);
 }
@@ -225,7 +206,6 @@ body{
 .empty-state h3{font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:6px}
 .empty-state p{font-size:0.85rem}
 
-/* Confetti */
 #confettiRoot{position:fixed;inset:0;pointer-events:none;z-index:999}
 .c-piece{
   position:absolute;width:10px;height:10px;border-radius:2px;
@@ -236,14 +216,15 @@ body{
   100%{transform:translateY(110vh) rotate(720deg);opacity:0}
 }
 
-/* Responsive */
 @media(max-width:600px){
   .header h1{font-size:1.4rem}
   .spin-btn{padding:16px 36px;font-size:1rem}
-  .attr-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
-  .budget-grid{grid-template-columns:repeat(2,1fr)}
+  .attr-grid{grid-template-columns:repeat(auto-fill,minmax(135px,1fr))}
   .slot-card{padding:18px 12px}
   .slot-card .slot-value{font-size:1.2rem}
+  .result-banner{padding:16px}
+  .result-banner .rb-icon{font-size:2rem}
+  .result-banner .rb-info h2{font-size:1.2rem}
 }
 </style>
 </head>
@@ -251,7 +232,7 @@ body{
 <div class="container">
 <div class="header">
   <h1>下一站去哪儿？</h1>
-  <p>随机出行方式 · 智能路线规划 · 经费预算一步到位</p>
+  <p>随机出行方式 · 经济/品质双方案 · 路线+预算一步到位</p>
 </div>
 
 <div class="slot-area" id="slotArea">
@@ -275,7 +256,7 @@ body{
   <div class="empty-state" id="emptyState">
     <div class="es-icon">🗺️</div>
     <h3>点击上方按钮，让命运为你规划旅程</h3>
-    <p>系统将随机选择出行方式与目的地，并生成专属行程</p>
+    <p>系统将随机选择出行方式与目的地，并提供经济实惠 & 品质享受两种方案</p>
   </div>
 </div>
 </div>
@@ -284,158 +265,232 @@ body{
 (function(){
   'use strict';
 
-  // ===== DATA =====
-  // Transport modes
   const TRANSPORTS = ['highspeed', 'flight'];
   const DESTINATIONS = ['yunnan', 'guizhou'];
 
   const TRANSPORT_INFO = {
-    highspeed: { name: '高铁', icon: '🚄', color: '#3b82f6' },
-    flight: { name: '飞机', icon: '✈️', color: '#8b5cf6' }
+    highspeed: { name: '高铁', icon: '🚄' },
+    flight: { name: '飞机', icon: '✈️' }
   };
 
   const DEST_INFO = {
-    yunnan: { name: '云南', icon: '🏔️', emoji: '🌿', css: 'yn-theme', bg: 'yn-bg', color: '#e8633a' },
-    guizhou: { name: '贵州', icon: '⛰️', emoji: '🏞️', css: 'gz-theme', bg: 'gz-bg', color: '#2d8a6e' }
+    yunnan: { name: '云南', icon: '🏔️', emoji: '🌿', css: 'yn-theme', bg: 'yn-bg' },
+    guizhou: { name: '贵州', icon: '⛰️', emoji: '🏞️', css: 'gz-theme', bg: 'gz-bg' }
   };
 
-  // Different attractions per transport mode
-  const ATTRACTIONS = {
-    yunnan: {
-      highspeed: [
-        { name: '丽江古城', desc: '800年水韵古城，纳西族文化发源地，夜宿古城客栈', tags: ['古城','世界遗产','人文'] },
-        { name: '大理洱海', desc: '环湖骑行120公里，风花雪月四景之首，白族三道茶体验', tags: ['湖泊','骑行','民俗'] },
-        { name: '玉龙雪山', desc: '北半球最南的雪山，乘索道登4506米冰川公园', tags: ['雪山','索道','高原'] },
-        { name: '束河古镇', desc: '比丽江更宁静，茶马古道重镇，皮匠手艺传承', tags: ['古镇','手工艺','慢生活'] },
-        { name: '拉市海', desc: '高原湿地候鸟天堂，骑马穿越纳西村落', tags: ['湿地','骑马','生态'] },
-        { name: '白沙壁画', desc: '明代壁画艺术瑰宝，融合汉藏纳西三种风格', tags: ['壁画','历史','艺术'] },
-      ],
-      flight: [
-        { name: '西双版纳热带雨林', desc: '中国唯一热带雨林，野象谷遇亚洲象，傣族泼水狂欢', tags: ['雨林','大象','傣族'] },
-        { name: '香格里拉普达措', desc: '国家公园，属都湖环湖徒步，高山牧场牦牛成群', tags: ['国家公园','徒步','高原'] },
-        { name: '元阳梯田', desc: '哈尼族1300年农耕杰作，日出云海光影绝美', tags: ['梯田','摄影','日出'] },
-        { name: '腾冲热海', desc: '火山地热温泉，泡汤看星空，和顺古镇探访', tags: ['温泉','火山','古镇'] },
-        { name: '泸沽湖', desc: '摩梭女儿国，猪槽船游湖，走婚桥上看日落', tags: ['湖泊','摩梭','日落'] },
-        { name: '梅里雪山', desc: '藏区八大神山之首，日照金山圣景，雨崩徒步', tags: ['雪山','朝圣','徒步'] },
-      ]
-    },
-    guizhou: {
-      highspeed: [
-        { name: '黄果树瀑布', desc: '亚洲第一瀑，水帘洞穿越体验，天星桥喀斯特奇观', tags: ['瀑布','水帘洞','喀斯特'] },
-        { name: '西江千户苗寨', desc: '世界最大苗寨，万家灯火夜景，长桌宴酸汤鱼', tags: ['苗寨','夜景','美食'] },
-        { name: '镇远古镇', desc: '2200年历史，舞阳河S形穿城，夜游青龙洞', tags: ['古镇','游船','历史'] },
-        { name: '荔波小七孔', desc: '地球腰带上的绿宝石，水上森林漫步', tags: ['水上森林','翡翠','世界遗产'] },
-        { name: '肇兴侗寨', desc: '侗族大歌发源地，鼓楼风雨桥，蜡染手作体验', tags: ['侗寨','非遗','手作'] },
-        { name: '龙宫', desc: '中国最长水溶洞，乘船穿越地下暗河', tags: ['溶洞','暗河','地底'] },
-      ],
-      flight: [
-        { name: '梵净山', desc: '世界自然遗产，红云金顶直插云霄，万米睡佛奇观', tags: ['世界遗产','云海','佛教'] },
-        { name: '织金洞', desc: '溶洞之王，石笋石幔世界罕见，地下宫殿探险', tags: ['溶洞','探险','地质'] },
-        { name: '赤水丹霞', desc: '中国最大丹霞地貌，赤水大瀑布媲美黄果树', tags: ['丹霞','瀑布','红色'] },
-        { name: '万峰林', desc: '喀斯特峰林壮观，徐霞客赞"天下山峰何其多"', tags: ['峰林','骑行','摄影'] },
-        { name: '马岭河峡谷', desc: '地球最美伤疤，峡谷漂流探险，钙化瀑布群', tags: ['峡谷','漂流','探险'] },
-        { name: '百里杜鹃', desc: '世界最大天然杜鹃花海，春季满山姹紫嫣红', tags: ['花海','春季','摄影'] },
-      ]
-    }
-  };
-
-  const ITINERARIES = {
-    yunnan: {
-      highspeed: [
-        { title: '抵达昆明', desc: '高铁抵达昆明南站，入住市区酒店，晚上逛南强街夜市，品尝过桥米线、汽锅鸡', meal: '🍜 晚餐: 过桥米线 + 烧饵块' },
-        { title: '大理古城 & 洱海', desc: '上午高铁/动车至大理(2h)，租电瓶车环洱海西路，打卡S弯、喜洲古镇，尝喜洲粑粑', meal: '🍳 早餐: 小锅米线 / 🥘 午餐: 大理酸辣鱼' },
-        { title: '丽江古城', desc: '上午动车至丽江(1.5h)，下午漫步古城四方街、木府，晚上酒吧街听民谣', meal: '🍲 晚餐: 腊排骨火锅 + 丽江粑粑' },
-        { title: '玉龙雪山', desc: '早起乘索道上雪山，蓝月谷徒步拍照，下午白沙古镇逛壁画', meal: '🥩 午餐: 纳西烤鱼 + 鸡豆凉粉' },
-        { title: '返程', desc: '上午束河古镇最后逛逛，买鲜花饼伴手礼，下午高铁返程', meal: '🎁 伴手礼: 鲜花饼 + 普洱茶' },
-      ],
-      flight: [
-        { title: '抵达昆明', desc: '飞抵昆明长水机场，入住市区，晚上逛金马碧鸡坊、南屏街', meal: '🍜 晚餐: 野生菌火锅 + 烤乳扇' },
-        { title: '飞往西双版纳', desc: '早班机飞版纳(1h)，下午曼听公园+总佛寺，晚上告庄星光夜市', meal: '🥥 午餐: 傣味手抓饭 / 🍢 夜市: 舂鸡脚+老挝冰咖啡' },
-        { title: '热带雨林探险', desc: '中科院热带植物园(或野象谷)，看绞杀榕、跳舞草，傍晚傣族园泼水', meal: '🐟 午餐: 香茅草烤鱼 + 菠萝饭' },
-        { title: '飞往丽江', desc: '上午飞丽江，下午束河古镇发呆晒太阳，晚上大研古城听纳西古乐', meal: '🍲 晚餐: 黑山羊火锅' },
-        { title: '返程', desc: '上午最后逛忠义市场买特产，下午丽江机场飞回', meal: '🎁 伴手礼: 普洱茶饼 + 野生菌干' },
-      ]
-    },
-    guizhou: {
-      highspeed: [
-        { title: '抵达贵阳', desc: '高铁抵达贵阳北站，入住市区，晚上逛甲秀楼、青云路夜市', meal: '🍜 晚餐: 肠旺面 + 丝娃娃' },
-        { title: '黄果树瀑布', desc: '上午高铁至安顺(30min)，全天游览黄果树大瀑布、天星桥、陡坡塘', meal: '🥘 午餐: 花江狗肉/酸汤牛肉' },
-        { title: '西江千户苗寨', desc: '上午高铁至凯里(40min)，转车至苗寨，下午穿苗服拍照，晚上观景台看万家灯火', meal: '🍲 晚餐: 长桌宴 + 酸汤鱼' },
-        { title: '荔波小七孔', desc: '上午高铁至荔波(1h)，漫步水上森林、拉雅瀑布、卧龙潭', meal: '🐟 午餐: 樟江烤鱼 + 虾酸牛肉' },
-        { title: '返程', desc: '上午贵阳逛黔灵山公园看猴子，买茅台/老干妈伴手礼，下午高铁返程', meal: '🎁 伴手礼: 茅台镇酒 + 老干妈 + 刺梨干' },
-      ],
-      flight: [
-        { title: '抵达贵阳', desc: '飞抵贵阳龙洞堡机场，晚上逛花果园"白宫"夜景、二七路小吃街', meal: '🍜 晚餐: 花溪牛肉粉 + 豆腐圆子' },
-        { title: '梵净山朝圣', desc: '上午高铁至铜仁(1h)+转车至梵净山，登红云金顶看云海佛光', meal: '🥘 午餐: 铜仁锅巴粉 + 米豆腐' },
-        { title: '织金洞探险', desc: '上午高铁至织金(1h)，探秘地下溶洞宫殿，下午返回贵阳', meal: '🍲 晚餐: 酸汤鱼 + 小米渣' },
-        { title: '赤水丹霞', desc: '上午高铁至赤水(2h)，赤水大瀑布+佛光岩，傍晚返回', meal: '🐔 午餐: 赤水豆花烤鱼 + 竹筒饭' },
-        { title: '返程', desc: '上午黔灵山看猴子、买特产，下午贵阳机场飞回', meal: '🎁 伴手礼: 茅台冰淇淋 + 刺梨原液' },
-      ]
-    }
-  };
-
-  const BUDGETS = {
+  // ===== DATA: Two plans per combo =====
+  const PLANS = {
     yunnan: {
       highspeed: {
-        transport: '¥600-900/人', transportNum: 750,
-        hotel: '¥150-250/晚', hotelNum: 200,
-        tickets: '¥300-500/人', ticketsNum: 400,
-        food: '¥80-150/天', foodNum: 115,
-        total: '¥2,500-4,000/人', totalNum: 3250
+        attractions: [
+          { name: '丽江古城', desc: '800年水韵古城，纳西文化发源地，夜宿古城客栈', tags: ['古城','世界遗产','人文'] },
+          { name: '大理洱海', desc: '环湖骑行120公里，风花雪月四景之首', tags: ['湖泊','骑行','摄影'] },
+          { name: '玉龙雪山', desc: '乘索道登4506米冰川公园，蓝月谷绝美', tags: ['雪山','索道','冰川'] },
+          { name: '束河古镇', desc: '比丽江更宁静，茶马古道重镇', tags: ['古镇','手工艺','慢生活'] },
+          { name: '拉市海', desc: '高原湿地候鸟天堂，骑马穿越纳西村落', tags: ['湿地','骑马','生态'] },
+          { name: '白沙壁画', desc: '明代壁画瑰宝，融合汉藏纳西风格', tags: ['壁画','历史','艺术'] },
+        ],
+        eco: {
+          itinerary: [
+            { title: '高铁抵达昆明', desc: '二等座直达昆明南站，入住青旅/经济酒店(¥80-120/晚)' },
+            { title: '动车→大理古城', desc: '动车2h至大理(¥145)，租电动车环洱海(¥50/天)，住古城客栈' },
+            { title: '动车→丽江', desc: '动车1.5h至丽江(¥80)，四方街+木府(¥60)，忠义市场小吃' },
+            { title: '玉龙雪山一日', desc: '公交至雪山(¥15)，大索道(¥140)，蓝月谷免费徒步' },
+            { title: '返程', desc: '束河古镇免费逛，买鲜花饼，高铁返程' },
+          ],
+          budget: [
+            { label: '往返交通', value: '¥600-900', detail: '高铁二等座' },
+            { label: '住宿(4晚)', value: '¥400-600', detail: '青旅/经济酒店' },
+            { label: '门票合计', value: '¥350-500', detail: '核心景点必去' },
+            { label: '餐饮(5天)', value: '¥400-600', detail: '当地小吃为主' },
+            { label: '市内交通', value: '¥150-250', detail: '公交+拼车' },
+          ],
+          total: '¥1,900-2,850/人',
+          totalNum: 2375,
+        },
+        premium: {
+          itinerary: [
+            { title: '高铁商务座抵达', desc: '商务座至昆明南站，入住五星酒店(¥400-600/晚)，翠湖公园漫步' },
+            { title: '包车→大理', desc: '包车游大理(¥400/天)，洱海S弯旅拍(¥300)，双廊海景民宿(¥500/晚)' },
+            { title: '丽江悦榕庄', desc: '入住悦榕庄(¥1200/晚)，私人向导游古城，纳西古乐VIP席' },
+            { title: '雪山VIP通道', desc: '专车接送雪山(¥200)，VIP索道免排队(¥200)，印象丽江演出(¥280)' },
+            { title: '返程', desc: '机场贵宾厅，商务舱返程，普洱茶+野生菌礼盒伴手礼' },
+          ],
+          budget: [
+            { label: '往返交通', value: '¥1,200-2,000', detail: '商务座/商务舱' },
+            { label: '住宿(4晚)', value: '¥1,800-3,500', detail: '五星/特色民宿' },
+            { label: '门票+体验', value: '¥800-1,500', detail: 'VIP通道+演出' },
+            { label: '餐饮(5天)', value: '¥800-1,500', detail: '特色餐厅' },
+            { label: '包车/接送', value: '¥600-1,000', detail: '全程专车' },
+          ],
+          total: '¥5,200-9,500/人',
+          totalNum: 7350,
+        }
       },
       flight: {
-        transport: '¥800-1,500/人', transportNum: 1150,
-        hotel: '¥180-300/晚', hotelNum: 240,
-        tickets: '¥350-600/人', ticketsNum: 475,
-        food: '¥100-180/天', foodNum: 140,
-        total: '¥3,500-5,500/人', totalNum: 4500
+        attractions: [
+          { name: '西双版纳热带雨林', desc: '中国唯一热带雨林，野象谷遇亚洲象，傣族泼水', tags: ['雨林','大象','傣族'] },
+          { name: '香格里拉普达措', desc: '国家公园属都湖徒步，高山牧场牦牛成群', tags: ['国家公园','徒步','高原'] },
+          { name: '元阳梯田', desc: '哈尼族1300年农耕杰作，日出云海光影绝美', tags: ['梯田','摄影','日出'] },
+          { name: '腾冲热海', desc: '火山地热温泉泡汤，和顺古镇探访', tags: ['温泉','火山','古镇'] },
+          { name: '泸沽湖', desc: '摩梭女儿国，猪槽船游湖，走婚桥日落', tags: ['湖泊','摩梭','日落'] },
+          { name: '梅里雪山', desc: '藏区八大神山之首，日照金山圣景', tags: ['雪山','朝圣','徒步'] },
+        ],
+        eco: {
+          itinerary: [
+            { title: '飞抵昆明', desc: '特价机票至长水机场(¥399起)，机场大巴至市区(¥25)' },
+            { title: '飞往版纳', desc: '早班特价机票至版纳(¥200起)，告庄夜市小吃，住傣家民宿' },
+            { title: '热带雨林探险', desc: '中科院植物园(¥80)，傣族园免费参观，租自行车逛' },
+            { title: '飞往丽江', desc: '特价飞丽江(¥250起)，束河古镇发呆，忠义市场买特产' },
+            { title: '返程', desc: '丽江机场返程，提前抢特价票' },
+          ],
+          budget: [
+            { label: '往返机票', value: '¥800-1,500', detail: '含省内2程特价' },
+            { label: '住宿(4晚)', value: '¥500-800', detail: '民宿/经济酒店' },
+            { label: '门票合计', value: '¥300-500', detail: '经典景点' },
+            { label: '餐饮(5天)', value: '¥500-800', detail: '夜市+傣味' },
+            { label: '省内交通', value: '¥300-500', detail: '机场大巴+租车' },
+          ],
+          total: '¥2,400-4,100/人',
+          totalNum: 3250,
+        },
+        premium: {
+          itinerary: [
+            { title: '商务舱飞昆明', desc: '商务舱直达，接机专车至洲际酒店(¥800/晚)' },
+            { title: '版纳安纳塔拉', desc: '飞版纳入住安纳塔拉度假酒店(¥1500/晚)，私人雨林向导' },
+            { title: '野象谷VIP', desc: 'VIP野象谷+牧象体验(¥600)，曼听公园篝火晚会VIP席(¥380)' },
+            { title: '丽江金茂璞修', desc: '飞丽江入住雪山景酒店(¥2000/晚)，直升机游雪山(¥880)' },
+            { title: '返程', desc: '商务舱返程，野生菌+普洱茶+翡翠伴手礼' },
+          ],
+          budget: [
+            { label: '往返+省内机票', value: '¥2,500-4,000', detail: '商务舱+省内3程' },
+            { label: '住宿(4晚)', value: '¥3,000-6,000', detail: '五星度假酒店' },
+            { label: '门票+体验', value: '¥1,200-2,500', detail: 'VIP+直升机' },
+            { label: '餐饮(5天)', value: '¥1,000-2,000', detail: '酒店+特色餐厅' },
+            { label: '全程专车', value: '¥800-1,500', detail: '接机+包车' },
+          ],
+          total: '¥8,500-16,000/人',
+          totalNum: 12250,
+        }
       }
     },
     guizhou: {
       highspeed: {
-        transport: '¥400-700/人', transportNum: 550,
-        hotel: '¥120-200/晚', hotelNum: 160,
-        tickets: '¥250-450/人', ticketsNum: 350,
-        food: '¥60-120/天', foodNum: 90,
-        total: '¥1,800-3,200/人', totalNum: 2500
+        attractions: [
+          { name: '黄果树瀑布', desc: '亚洲第一瀑，水帘洞穿越体验震撼', tags: ['瀑布','水帘洞','喀斯特'] },
+          { name: '西江千户苗寨', desc: '世界最大苗寨，万家灯火夜景绝美', tags: ['苗寨','夜景','长桌宴'] },
+          { name: '镇远古镇', desc: '2200年历史，舞阳河S形穿城', tags: ['古镇','游船','历史'] },
+          { name: '荔波小七孔', desc: '地球腰带上的绿宝石，水上森林', tags: ['水上森林','翡翠','世界遗产'] },
+          { name: '肇兴侗寨', desc: '侗族大歌发源地，鼓楼风雨桥', tags: ['侗寨','非遗','手作'] },
+          { name: '龙宫', desc: '中国最长水溶洞，乘船穿地下暗河', tags: ['溶洞','暗河','探险'] },
+        ],
+        eco: {
+          itinerary: [
+            { title: '高铁抵达贵阳', desc: '二等座至贵阳北站，入住青旅(¥60-100/晚)，甲秀楼免费逛' },
+            { title: '黄果树一日', desc: '高铁至安顺(¥50)，黄果树门票(¥160)，住安顺经济酒店' },
+            { title: '千户苗寨', desc: '高铁至凯里(¥60)，苗寨门票(¥90)，住苗寨民宿(¥80/晚)' },
+            { title: '荔波小七孔', desc: '高铁至荔波(¥70)，门票(¥130)，卧龙潭免费', },
+            { title: '返程', desc: '贵阳黔灵山(¥5)，买老干妈，高铁返程' },
+          ],
+          budget: [
+            { label: '往返交通', value: '¥400-700', detail: '高铁二等座' },
+            { label: '住宿(4晚)', value: '¥300-500', detail: '青旅/经济酒店' },
+            { label: '门票合计', value: '¥300-450', detail: '核心景点' },
+            { label: '餐饮(5天)', value: '¥300-500', detail: '酸汤鱼/肠旺面' },
+            { label: '市内交通', value: '¥150-250', detail: '公交+拼车' },
+          ],
+          total: '¥1,450-2,400/人',
+          totalNum: 1925,
+        },
+        premium: {
+          itinerary: [
+            { title: '商务座抵贵阳', desc: '商务座直达，入住安纳塔拉度假酒店(¥800/晚)' },
+            { title: '黄果树VIP', desc: '专车至安顺(¥300)，VIP通道+扶梯(¥300)，入住黄果树柏联温泉酒店' },
+            { title: '苗寨悦榕庄', desc: '入住苗寨高端民宿(¥800/晚)，苗族银饰手作体验(¥300)' },
+            { title: '荔波小七孔VIP', desc: '包车游荔波(¥400)，卧龙潭漂流VIP(¥200)，入住荔波山水酒店' },
+            { title: '返程', desc: '茅台镇酒庄参观(¥200)，商务座返程，茅台+刺梨伴手礼' },
+          ],
+          budget: [
+            { label: '往返交通', value: '¥800-1,300', detail: '商务座' },
+            { label: '住宿(4晚)', value: '¥1,500-3,000', detail: '高端酒店/民宿' },
+            { label: '门票+体验', value: '¥600-1,200', detail: 'VIP+手作体验' },
+            { label: '餐饮(5天)', value: '¥600-1,200', detail: '高端黔菜' },
+            { label: '包车/接送', value: '¥500-900', detail: '全程专车' },
+          ],
+          total: '¥4,000-7,600/人',
+          totalNum: 5800,
+        }
       },
       flight: {
-        transport: '¥600-1,200/人', transportNum: 900,
-        hotel: '¥150-250/晚', hotelNum: 200,
-        tickets: '¥300-500/人', ticketsNum: 400,
-        food: '¥80-150/天', foodNum: 115,
-        total: '¥2,800-4,500/人', totalNum: 3650
+        attractions: [
+          { name: '梵净山', desc: '世界自然遗产，红云金顶云海佛光', tags: ['世界遗产','云海','佛教'] },
+          { name: '织金洞', desc: '溶洞之王，石笋石幔地下宫殿', tags: ['溶洞','探险','地质'] },
+          { name: '赤水丹霞', desc: '中国最大丹霞地貌，赤水大瀑布', tags: ['丹霞','瀑布','奇观'] },
+          { name: '万峰林', desc: '喀斯特峰林壮观，徐霞客赞天下山峰', tags: ['峰林','骑行','摄影'] },
+          { name: '马岭河峡谷', desc: '地球最美伤疤，峡谷漂流探险', tags: ['峡谷','漂流','探险'] },
+          { name: '百里杜鹃', desc: '世界最大杜鹃花海，春季满山嫣红', tags: ['花海','春季','摄影'] },
+        ],
+        eco: {
+          itinerary: [
+            { title: '飞抵贵阳', desc: '特价机票至龙洞堡机场(¥299起)，机场大巴至市区，花果园夜市' },
+            { title: '梵净山朝圣', desc: '高铁至铜仁(¥60)，梵净山门票(¥100)，住山下客栈(¥80)' },
+            { title: '织金洞探险', desc: '高铁至织金(¥50)，门票(¥120)，傍晚回贵阳' },
+            { title: '赤水丹霞', desc: '高铁至赤水(¥80)，丹霞门票(¥90)，赤水大瀑布徒步' },
+            { title: '返程', desc: '黔灵山(¥5)，抢特价机票返程' },
+          ],
+          budget: [
+            { label: '往返机票', value: '¥600-1,200', detail: '特价经济舱' },
+            { label: '住宿(4晚)', value: '¥400-700', detail: '客栈/经济酒店' },
+            { label: '门票合计', value: '¥300-500', detail: '四大景点' },
+            { label: '餐饮(5天)', value: '¥400-700', detail: '黔菜小吃' },
+            { label: '省内高铁', value: '¥250-400', detail: '高铁接驳' },
+          ],
+          total: '¥1,950-3,500/人',
+          totalNum: 2725,
+        },
+        premium: {
+          itinerary: [
+            { title: '商务舱飞贵阳', desc: '商务舱直达，接机入住安纳塔拉(¥800/晚)，晚餐茅台品鉴' },
+            { title: '梵净山VIP', desc: '专车+VIP索道(¥500)，入住梵净山博锐度假酒店(¥1200/晚)' },
+            { title: '织金洞+茅台镇', desc: '包车织金洞(¥300)+茅台镇酒庄(¥200)，茅台晚宴(¥500)' },
+            { title: '赤水丹霞豪华游', desc: '包车赤水(¥400)，竹海漂流VIP(¥300)，入住赤水金黔嘉华' },
+            { title: '返程', desc: '商务舱返程，茅台酒+老干妈礼盒+刺梨精华伴手礼' },
+          ],
+          budget: [
+            { label: '往返机票', value: '¥1,500-3,000', detail: '商务舱' },
+            { label: '住宿(4晚)', value: '¥2,000-4,000', detail: '五星/高端民宿' },
+            { label: '门票+体验', value: '¥800-1,500', detail: 'VIP+茅台品鉴' },
+            { label: '餐饮(5天)', value: '¥800-1,500', detail: '高端黔菜+茅台' },
+            { label: '全程专车', value: '¥600-1,200', detail: '包车+接机' },
+          ],
+          total: '¥5,700-11,200/人',
+          totalNum: 8450,
+        }
       }
     }
   };
 
-  // ===== State =====
   let isSpinning = false;
-
-  // ===== DOM refs =====
   const spinBtn = document.getElementById('spinBtn');
   const resultArea = document.getElementById('resultArea');
   const slotTransport = document.getElementById('slotTransport');
   const slotDest = document.getElementById('slotDest');
   const confettiRoot = document.getElementById('confettiRoot');
 
-  const TRANSPORT_EMOJIS = { highspeed: '🚄', flight: '✈️' };
-  const TRANSPORT_NAMES = { highspeed: '高铁', flight: '飞机' };
-  const DEST_NAMES = { yunnan: '云南', guizhou: '贵州' };
-  const DEST_EMOJIS = { yunnan: '🏔️', guizhou: '⛰️' };
+  const TE = { highspeed: '🚄', flight: '✈️' };
+  const TN = { highspeed: '高铁', flight: '飞机' };
+  const DE = { yunnan: '🏔️', guizhou: '⛰️' };
+  const DN = { yunnan: '云南', guizhou: '贵州' };
 
-  // ===== Spin =====
   window.startSpin = function() {
     if (isSpinning) return;
     isSpinning = true;
     spinBtn.disabled = true;
     spinBtn.classList.add('spinning');
 
-    // Final random picks
     const finalTransport = TRANSPORTS[Math.floor(Math.random() * 2)];
     const finalDest = DESTINATIONS[Math.floor(Math.random() * 2)];
 
-    // Animate slots
     slotTransport.classList.add('shaking');
     slotDest.classList.add('shaking');
 
@@ -444,21 +499,19 @@ body{
     const interval = setInterval(function() {
       const t = Math.floor(Math.random() * 2);
       const d = Math.floor(Math.random() * 2);
-      slotTransport.querySelector('.slot-emoji').textContent = TRANSPORT_EMOJIS[TRANSPORTS[t]];
-      slotTransport.querySelector('.slot-value').textContent = TRANSPORT_NAMES[TRANSPORTS[t]];
-      slotDest.querySelector('.slot-emoji').textContent = DEST_EMOJIS[DESTINATIONS[d]];
-      slotDest.querySelector('.slot-value').textContent = DEST_NAMES[DESTINATIONS[d]];
+      slotTransport.querySelector('.slot-emoji').textContent = TE[TRANSPORTS[t]];
+      slotTransport.querySelector('.slot-value').textContent = TN[TRANSPORTS[t]];
+      slotDest.querySelector('.slot-emoji').textContent = DE[DESTINATIONS[d]];
+      slotDest.querySelector('.slot-value').textContent = DN[DESTINATIONS[d]];
       tick++;
       if (tick >= maxTicks) {
         clearInterval(interval);
-        // Set final values
-        slotTransport.querySelector('.slot-emoji').textContent = TRANSPORT_EMOJIS[finalTransport];
-        slotTransport.querySelector('.slot-value').textContent = TRANSPORT_NAMES[finalTransport];
-        slotDest.querySelector('.slot-emoji').textContent = DEST_EMOJIS[finalDest];
-        slotDest.querySelector('.slot-value').textContent = DEST_NAMES[finalDest];
+        slotTransport.querySelector('.slot-emoji').textContent = TE[finalTransport];
+        slotTransport.querySelector('.slot-value').textContent = TN[finalTransport];
+        slotDest.querySelector('.slot-emoji').textContent = DE[finalDest];
+        slotDest.querySelector('.slot-value').textContent = DN[finalDest];
         slotTransport.classList.remove('shaking');
         slotDest.classList.remove('shaking');
-        // Render result
         renderResult(finalTransport, finalDest);
         launchConfetti();
         isSpinning = false;
@@ -468,13 +521,11 @@ body{
     }, 70);
   };
 
-  // ===== Render =====
   function renderResult(transport, dest) {
     const tInfo = TRANSPORT_INFO[transport];
     const dInfo = DEST_INFO[dest];
-    const attrs = ATTRACTIONS[dest][transport];
-    const plan = ITINERARIES[dest][transport];
-    const budget = BUDGETS[dest][transport];
+    const plan = PLANS[dest][transport];
+    const seasonTag = dest==='yunnan' ? '3-5月/9-11月' : '4-6月/9-10月';
 
     let h = '<div class="result-card '+dInfo.css+'">';
 
@@ -486,25 +537,15 @@ body{
     h += '<div class="rb-tags">';
     h += '<span class="rb-tag">'+tInfo.icon+' '+tInfo.name+'出发</span>';
     h += '<span class="rb-tag">'+dInfo.emoji+' 5天4晚</span>';
-    h += '<span class="rb-tag">📅 推荐季节: '+(dest==='yunnan'?'3-5月/9-11月':'4-6月/9-10月')+'</span>';
+    h += '<span class="rb-tag">📅 '+seasonTag+'</span>';
     h += '</div></div></div>';
 
-    // Body
     h += '<div class="result-body">';
 
-    // Transport info
-    h += '<div class="section-title">🚗 出行信息</div>';
-    h += '<div class="transport-bar">';
-    h += '<span class="tb-icon">'+tInfo.icon+'</span>';
-    h += '<div class="tb-details">';
-    h += '<h4>'+tInfo.name+' · '+dInfo.name+'</h4>';
-    h += '<p>'+budget.transport+' | 建议提前15-30天订票更划算</p>';
-    h += '</div></div>';
-
-    // Attractions (transport-specific)
-    h += '<div class="section-title">🏆 '+tInfo.name+'出行 · 精选景点 ('+attrs.length+'个)</div>';
+    // Attractions
+    h += '<div class="section-title">🏆 '+tInfo.name+'出行 · 精选景点</div>';
     h += '<div class="attr-grid">';
-    attrs.forEach(function(a,i){
+    plan.attractions.forEach(function(a,i){
       let rc = i===0?'r1':i===1?'r2':i===2?'r3':'';
       h += '<div class="attr-item">';
       h += '<div class="attr-rank '+rc+'">'+(i+1)+'</div>';
@@ -516,38 +557,45 @@ body{
     });
     h += '</div>';
 
-    // Itinerary
-    h += '<div class="section-title">🗓️ 5天4晚路线规划</div>';
-    h += '<div class="itinerary">';
-    plan.forEach(function(day,i){
-      h += '<div class="it-day">';
-      h += '<div class="it-day-num">Day '+(i+1)+'</div>';
-      h += '<div class="it-day-content">';
-      h += '<h5>'+day.title+'</h5>';
-      h += '<p>'+day.desc+'</p>';
-      if(day.meal) h += '<div class="it-meal">'+day.meal+'</div>';
-      h += '</div></div>';
-    });
+    // Tab switcher
+    h += '<div class="tab-switcher">';
+    h += '<button class="tab-btn eco-tab active" onclick="switchTab(\'eco\',this)">🌱 经济实惠</button>';
+    h += '<button class="tab-btn premium-tab" onclick="switchTab(\'premium\',this)">👑 品质享受</button>';
     h += '</div>';
 
-    // Budget
-    h += '<div class="section-title">💰 经费预算 (人均)</div>';
-    h += '<div class="budget-grid">';
-    h += '<div class="budget-item"><div class="bi-amount">'+budget.transport+'</div><div class="bi-label">🚗 往返交通</div></div>';
-    h += '<div class="budget-item"><div class="bi-amount">'+budget.hotel+'</div><div class="bi-label">🏨 住宿/晚</div></div>';
-    h += '<div class="budget-item"><div class="bi-amount">'+budget.tickets+'</div><div class="bi-label">🎫 门票合计</div></div>';
-    h += '<div class="budget-item"><div class="bi-amount">'+budget.food+'</div><div class="bi-label">🍽️ 餐饮/天</div></div>';
+    // ECO tab content
+    h += '<div class="tab-content active" id="tab-eco">';
+    h += '<div class="section-title">🗓️ 经济实惠路线</div>';
+    h += '<div class="itinerary">';
+    plan.eco.itinerary.forEach(function(d,i){
+      h += '<div class="it-day"><div class="it-day-num">D'+(i+1)+'</div>';
+      h += '<div class="it-day-content"><h5>'+d.title+'</h5><p>'+d.desc+'</p></div></div>';
+    });
     h += '</div>';
-    h += '<div class="budget-total">';
-    h += '<div class="bt-label">5天4晚预估总费用 (人均)</div>';
-    h += '<div class="bt-amount">'+budget.total+'</div>';
+    h += buildBudgetTable(plan.eco, 'eco');
+    h += '</div>';
+
+    // PREMIUM tab content
+    h += '<div class="tab-content" id="tab-premium">';
+    h += '<div class="section-title">🗓️ 品质享受路线</div>';
+    h += '<div class="itinerary">';
+    plan.premium.itinerary.forEach(function(d,i){
+      h += '<div class="it-day"><div class="it-day-num">D'+(i+1)+'</div>';
+      h += '<div class="it-day-content"><h5>'+d.title+'</h5><p>'+d.desc+'</p></div></div>';
+    });
+    h += '</div>';
+    h += buildBudgetTable(plan.premium, 'premium');
+    h += '</div>';
+
+    // Comparison
+    h += '<div class="comparison-bar">';
+    h += '<span class="cb-icon">💡</span>';
+    h += '<span class="cb-text"><b>差价约 ¥'+(plan.premium.totalNum - plan.eco.totalNum).toLocaleString()+'/人</b> —— 经济方案省下的钱可以再玩一趟！品质方案多花的钱换来 VIP通道、高端住宿和更深度体验。</span>';
     h += '</div>';
 
     h += '</div></div>';
-
     resultArea.innerHTML = h;
 
-    // Scroll to result on mobile
     if (window.innerWidth < 768) {
       setTimeout(function(){
         resultArea.querySelector('.result-card').scrollIntoView({behavior:'smooth',block:'start'});
@@ -555,7 +603,33 @@ body{
     }
   }
 
-  // ===== Confetti =====
+  function buildBudgetTable(plan, type) {
+    let cls = type==='eco' ? 'eco-plan' : 'premium-plan';
+    let hdrCls = type==='eco' ? 'eco' : 'premium';
+    let hdrIcon = type==='eco' ? '🌱' : '👑';
+    let hdrTitle = type==='eco' ? '经济实惠 · 预算明细' : '品质享受 · 预算明细';
+    let h = '<div class="budget-plan '+cls+'">';
+    h += '<div class="budget-plan-header '+hdrCls+'">'+hdrIcon+' '+hdrTitle+'</div>';
+    h += '<div class="budget-plan-body">';
+    plan.budget.forEach(function(b){
+      h += '<div class="budget-row">';
+      h += '<span class="br-label">'+b.label+'</span>';
+      h += '<div><div class="br-value">'+b.value+'</div><div class="br-detail">'+b.detail+'</div></div>';
+      h += '</div>';
+    });
+    h += '</div>';
+    h += '<div class="budget-plan-total">'+plan.total+'</div>';
+    h += '</div>';
+    return h;
+  }
+
+  window.switchTab = function(tab, btn) {
+    document.querySelectorAll('.tab-content').forEach(function(el){ el.classList.remove('active'); });
+    document.querySelectorAll('.tab-btn').forEach(function(el){ el.classList.remove('active'); });
+    document.getElementById('tab-'+tab).classList.add('active');
+    btn.classList.add('active');
+  };
+
   function launchConfetti() {
     const frag = document.createDocumentFragment();
     const colors = ['#e8633a','#2d8a6e','#f5a623','#6a9bcc','#e06090','#9b59b6','#f39c12','#1abc9c'];
