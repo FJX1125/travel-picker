@@ -3,763 +3,577 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>云南 VS 贵州 - 旅游随机选择器</title>
+<title>下一站去哪儿？- 智能旅行规划</title>
 <style>
 :root {
-  --yn-primary: #e8633a;
-  --yn-light: #fdf2ed;
-  --yn-accent: #c44a28;
-  --gz-primary: #2d8a6e;
-  --gz-light: #edf7f2;
-  --gz-accent: #1a6b52;
-  --bg: #f8f7f4;
-  --card: #ffffff;
+  --bg: #f7f5f0;
+  --card: #fff;
   --text: #2d2d2d;
-  --text-sub: #6b6b6b;
+  --sub: #7a7a7a;
   --border: #e8e6dc;
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
-  --shadow-md: 0 4px 20px rgba(0,0,0,0.08);
-  --shadow-lg: 0 12px 40px rgba(0,0,0,0.12);
-  --radius: 24px;
+  --yn: #e8633a;
+  --yn-light: #fdf2ed;
+  --yn-dark: #c44a28;
+  --gz: #2d8a6e;
+  --gz-light: #edf7f2;
+  --gz-dark: #1a6b52;
+  --gold: #f0a030;
+  --radius: 22px;
   --radius-sm: 14px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+  --shadow-md: 0 6px 24px rgba(0,0,0,0.08);
+  --shadow-lg: 0 14px 48px rgba(0,0,0,0.12);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:system-ui,-apple-system,'Segoe UI',sans-serif;
+  background:var(--bg);color:var(--text);
+  min-height:100dvh;display:flex;flex-direction:column;align-items:center;
+  padding:16px 16px 60px;
+  -webkit-font-smoothing:antialiased;
+}
+.container{width:100%;max-width:820px;display:flex;flex-direction:column;align-items:center}
+
+/* Header */
+.header{text-align:center;margin:20px 0 28px}
+.header h1{
+  font-size:1.8rem;font-weight:800;letter-spacing:-0.03em;
+  background:linear-gradient(135deg,var(--yn),var(--gz));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.header p{color:var(--sub);font-size:0.9rem;margin-top:6px}
+
+/* Spin Button - Large */
+.spin-btn{
+  display:flex;align-items:center;gap:10px;
+  padding:18px 48px;border-radius:60px;border:none;cursor:pointer;
+  font-size:1.15rem;font-weight:700;color:#fff;
+  background:linear-gradient(135deg,#ff6b4a,#e8633a);
+  box-shadow:0 6px 28px rgba(232,99,58,0.38);
+  transition:all 0.3s cubic-bezier(0.16,1,0.3,1);
+  margin-bottom:32px;letter-spacing:0.03em;
+  position:relative;overflow:hidden;
+}
+.spin-btn::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,0.15),transparent);
+}
+.spin-btn:hover{transform:translateY(-3px);box-shadow:0 10px 36px rgba(232,99,58,0.5)}
+.spin-btn:active{transform:scale(0.96)}
+.spin-btn:disabled{opacity:0.5;cursor:not-allowed;transform:none;box-shadow:none}
+.spin-btn .btn-icon{font-size:1.6rem;display:inline-block}
+@keyframes diceRoll{
+  0%{transform:rotateY(0) scale(1)}
+  25%{transform:rotateY(180deg) scale(0.8)}
+  50%{transform:rotateY(360deg) scale(1.1)}
+  75%{transform:rotateY(540deg) scale(0.9)}
+  100%{transform:rotateY(720deg) scale(1)}
+}
+.spin-btn.spinning .btn-icon{animation:diceRoll 0.9s ease-out}
+
+/* Slot Machine */
+.slot-area{
+  display:flex;gap:16px;justify-content:center;flex-wrap:wrap;
+  width:100%;margin-bottom:28px
+}
+.slot-card{
+  flex:1 1 180px;max-width:260px;min-width:150px;
+  background:var(--card);border-radius:var(--radius);
+  padding:24px 18px;text-align:center;
+  border:2px solid var(--border);
+  transition:all 0.35s cubic-bezier(0.16,1,0.3,1);
+  cursor:default;position:relative;
+}
+.slot-card .slot-label{
+  font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;
+  color:var(--sub);margin-bottom:8px;font-weight:700;
+}
+.slot-card .slot-value{
+  font-size:1.4rem;font-weight:800;margin-bottom:4px;
+  transition:all 0.2s;
+}
+.slot-card .slot-emoji{font-size:2.2rem;display:block;margin-bottom:6px}
+@keyframes slotShake{
+  0%,100%{transform:translateY(0)}
+  15%{transform:translateY(-6px)}
+  30%{transform:translateY(6px)}
+  45%{transform:translateY(-3px)}
+  60%{transform:translateY(3px)}
+  75%{transform:translateY(-1px)}
+}
+.slot-card.shaking{animation:slotShake 0.6s ease-in-out}
+
+/* Result Card */
+.result-card{
+  background:var(--card);border-radius:var(--radius);
+  padding:0;width:100%;box-shadow:var(--shadow-md);
+  border:1px solid var(--border);
+  overflow:hidden;
+  animation:fadeSlideIn 0.5s cubic-bezier(0.16,1,0.3,1) both;
+}
+@keyframes fadeSlideIn{
+  from{opacity:0;transform:translateY(24px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.result-banner{
+  padding:22px 24px;display:flex;align-items:center;gap:14px;
+  color:#fff;
+}
+.result-banner.yn-bg{background:linear-gradient(135deg,#e8633a,#d44a2a)}
+.result-banner.gz-bg{background:linear-gradient(135deg,#2d8a6e,#1a6b52)}
+.result-banner .rb-icon{font-size:2.6rem}
+.result-banner .rb-info h2{font-size:1.4rem;font-weight:800;letter-spacing:-0.02em}
+.result-banner .rb-info .rb-tags{display:flex;gap:6px;margin-top:4px;flex-wrap:wrap}
+.rb-tag{
+  font-size:0.72rem;padding:3px 10px;border-radius:20px;
+  background:rgba(255,255,255,0.2);backdrop-filter:blur(4px);
+  font-weight:600;
 }
 
-* { margin:0; padding:0; box-sizing:border-box; }
+.result-body{padding:24px}
 
-body {
-  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 24px 16px 60px;
-  -webkit-font-smoothing: antialiased;
+/* Section Title */
+.section-title{
+  font-size:0.78rem;font-weight:800;text-transform:uppercase;
+  letter-spacing:0.06em;color:var(--sub);
+  margin-bottom:12px;display:flex;align-items:center;gap:8px;
 }
+.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
 
-.header {
-  text-align: center;
-  margin-bottom: 32px;
+/* Transport Info */
+.transport-bar{
+  display:flex;align-items:center;gap:12px;
+  background:#fafaf8;border-radius:var(--radius-sm);
+  padding:16px 20px;margin-bottom:20px;
+  border:1px solid var(--border);
 }
-.header h1 {
-  font-size: 2rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  background: linear-gradient(135deg, var(--yn-primary), var(--gz-primary));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-.header p {
-  color: var(--text-sub);
-  font-size: 0.95rem;
-  margin-top: 6px;
-}
+.transport-bar .tb-icon{font-size:1.8rem}
+.transport-bar .tb-details h4{font-size:0.9rem;font-weight:700;margin-bottom:3px}
+.transport-bar .tb-details p{font-size:0.78rem;color:var(--sub)}
 
-/* ---- Transport Selector ---- */
-.transport-section {
-  display: flex;
-  gap: 8px;
-  background: var(--card);
-  border-radius: 48px;
-  padding: 5px;
-  box-shadow: var(--shadow-sm);
-  margin-bottom: 32px;
-  border: 1px solid var(--border);
+/* Attraction Grid */
+.attr-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));
+  gap:12px;margin-bottom:20px;
 }
-.transport-btn {
-  padding: 10px 24px;
-  border-radius: 44px;
-  border: none;
-  cursor: pointer;
-  font-size: 0.95rem;
-  font-weight: 600;
-  background: transparent;
-  color: var(--text-sub);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  white-space: nowrap;
+.attr-item{
+  background:#fafaf8;border-radius:var(--radius-sm);padding:14px;
+  border:1px solid var(--border);transition:all 0.2s;
 }
-.transport-btn.active {
-  background: var(--text);
-  color: #fff;
-  box-shadow: var(--shadow-md);
+.attr-item:hover{transform:translateY(-2px);box-shadow:var(--shadow-sm);border-color:#ccc}
+.attr-rank{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:24px;height:24px;border-radius:50%;font-size:0.7rem;
+  font-weight:800;color:#fff;margin-bottom:8px;
 }
-.transport-btn:hover:not(.active) {
-  background: rgba(0,0,0,0.04);
+.attr-rank.r1{background:linear-gradient(135deg,#f5a623,#e8961a)}
+.attr-rank.r2{background:linear-gradient(135deg,#a0a0a0,#808080)}
+.attr-rank.r3{background:linear-gradient(135deg,#c8945c,#a87840)}
+.attr-name{font-weight:700;font-size:0.9rem;margin-bottom:3px}
+.attr-desc{font-size:0.75rem;color:var(--sub);line-height:1.4}
+.attr-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+.attr-tags span{
+  font-size:0.65rem;padding:2px 7px;border-radius:10px;font-weight:600;
 }
+.yn-theme .attr-tags span{background:var(--yn-light);color:var(--yn-dark)}
+.gz-theme .attr-tags span{background:var(--gz-light);color:var(--gz-dark)}
 
-/* ---- Main Picker Section ---- */
-.picker-container {
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-  flex-wrap: wrap;
-  max-width: 780px;
-  width: 100%;
-  margin-bottom: 36px;
-  perspective: 1200px;
+/* Itinerary */
+.itinerary{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+.it-day{
+  display:flex;gap:14px;align-items:flex-start;
+  background:#fafaf8;border-radius:var(--radius-sm);padding:16px;
+  border:1px solid var(--border);
 }
+.it-day-num{
+  min-width:42px;height:42px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:0.85rem;color:#fff;flex-shrink:0;
+}
+.yn-theme .it-day-num{background:var(--yn)}
+.gz-theme .it-day-num{background:var(--gz)}
+.it-day-content h5{font-size:0.9rem;font-weight:700;margin-bottom:4px}
+.it-day-content p{font-size:0.78rem;color:var(--sub);line-height:1.5}
+.it-day-content .it-meal{font-size:0.7rem;color:var(--sub);margin-top:4px;font-style:italic}
 
-.dest-card {
-  flex: 1 1 280px;
-  max-width: 360px;
-  min-width: 260px;
-  border-radius: var(--radius);
-  padding: 32px 24px;
-  text-align: center;
-  cursor: pointer;
-  position: relative;
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-  overflow: hidden;
-  border: 2px solid transparent;
+/* Budget */
+.budget-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+  gap:10px;margin-bottom:12px;
 }
-.dest-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  opacity: 0.06;
-  transition: opacity 0.3s;
+.budget-item{
+  background:#fafaf8;border-radius:var(--radius-sm);padding:16px;
+  text-align:center;border:1px solid var(--border);
 }
-.dest-card:hover {
-  transform: translateY(-6px);
-  box-shadow: var(--shadow-lg);
+.budget-item .bi-amount{font-size:1.3rem;font-weight:800;letter-spacing:-0.02em}
+.budget-item .bi-label{font-size:0.72rem;color:var(--sub);margin-top:4px}
+.yn-theme .bi-amount{color:var(--yn)}
+.gz-theme .bi-amount{color:var(--gz)}
+.budget-total{
+  background:linear-gradient(135deg,#fef9f5,#f8f4ef);
+  border-radius:var(--radius-sm);padding:18px 24px;text-align:center;
+  border:2px solid var(--gold);
 }
-.dest-card:hover::before { opacity: 0.1; }
+.budget-total .bt-label{font-size:0.78rem;color:var(--sub);font-weight:700;text-transform:uppercase;letter-spacing:0.06em}
+.budget-total .bt-amount{font-size:2rem;font-weight:800;color:var(--gold);margin-top:4px}
 
-.dest-card.yn {
-  background: var(--card);
-  border-color: var(--yn-primary);
+/* Empty state */
+.empty-state{
+  text-align:center;padding:48px 20px;color:var(--sub);
 }
-.dest-card.yn::before {
-  background: var(--yn-primary);
+.empty-state .es-icon{font-size:4rem;opacity:0.25;margin-bottom:14px}
+.empty-state h3{font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:6px}
+.empty-state p{font-size:0.85rem}
+
+/* Confetti */
+#confettiRoot{position:fixed;inset:0;pointer-events:none;z-index:999}
+.c-piece{
+  position:absolute;width:10px;height:10px;border-radius:2px;
+  animation:cFall 2.8s ease-out forwards;
 }
-.dest-card.gz {
-  background: var(--card);
-  border-color: var(--gz-primary);
-}
-.dest-card.gz::before {
-  background: var(--gz-primary);
+@keyframes cFall{
+  0%{transform:translateY(-100vh) rotate(0);opacity:1}
+  100%{transform:translateY(110vh) rotate(720deg);opacity:0}
 }
 
-.dest-emoji {
-  font-size: 4rem;
-  margin-bottom: 12px;
-  display: block;
-}
-.dest-name {
-  font-size: 1.8rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  margin-bottom: 6px;
-}
-.dest-card.yn .dest-name { color: var(--yn-primary); }
-.dest-card.gz .dest-name { color: var(--gz-primary); }
-.dest-subtitle {
-  font-size: 0.9rem;
-  color: var(--text-sub);
-  line-height: 1.5;
-}
-
-/* ---- Slot Machine Animation ---- */
-@keyframes slotBlur {
-  0%   { filter: blur(0px); transform: translateY(0); }
-  15%  { filter: blur(2px); transform: translateY(-8px); }
-  30%  { filter: blur(4px); transform: translateY(8px); }
-  45%  { filter: blur(2px); transform: translateY(-4px); }
-  60%  { filter: blur(0px); transform: translateY(4px); }
-  75%  { filter: blur(1px); transform: translateY(-2px); }
-  100% { filter: blur(0px); transform: translateY(0); }
-}
-
-@keyframes slotSpin {
-  0%   { transform: scale(1); }
-  20%  { transform: scale(1.08); }
-  40%  { transform: scale(0.92); }
-  55%  { transform: scale(1.04); }
-  70%  { transform: scale(0.96); }
-  85%  { transform: scale(1.01); }
-  100% { transform: scale(1); }
-}
-
-.spinning {
-  animation: slotSpin 0.9s ease-out, slotBlur 0.7s ease-in-out;
-}
-
-/* ---- Spin Button ---- */
-.spin-btn {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 16px 40px;
-  border-radius: 48px;
-  border: none;
-  cursor: pointer;
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #fff;
-  background: linear-gradient(135deg, #ff6b4a, #e8633a);
-  box-shadow: 0 4px 20px rgba(232,99,58,0.35);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  margin-bottom: 36px;
-  letter-spacing: 0.02em;
-}
-.spin-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(232,99,58,0.45);
-}
-.spin-btn:active {
-  transform: scale(0.96);
-}
-.spin-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
-}
-.spin-icon {
-  font-size: 1.4rem;
-  display: inline-block;
-  transition: transform 0.5s;
-}
-.spinning .spin-icon {
-  animation: spin3d 0.9s ease-out;
-}
-@keyframes spin3d {
-  0%   { transform: rotateY(0deg); }
-  100% { transform: rotateY(720deg); }
-}
-
-/* ---- Result Display ---- */
-.result-section {
-  width: 100%;
-  max-width: 780px;
-}
-
-.result-card {
-  background: var(--card);
-  border-radius: var(--radius);
-  padding: 28px 28px 32px;
-  box-shadow: var(--shadow-md);
-  margin-bottom: 20px;
-  border: 1px solid var(--border);
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.result-header {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin-bottom: 20px;
-}
-.result-header .icon {
-  font-size: 2.8rem;
-}
-.result-header .info h2 {
-  font-size: 1.5rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-}
-.result-header .info .transport-tag {
-  display: inline-block;
-  font-size: 0.8rem;
-  font-weight: 600;
-  padding: 2px 10px;
-  border-radius: 20px;
-  margin-top: 4px;
-}
-.result-card.selected-yn .transport-tag {
-  background: var(--yn-light);
-  color: var(--yn-accent);
-}
-.result-card.selected-gz .transport-tag {
-  background: var(--gz-light);
-  color: var(--gz-accent);
-}
-.result-card.selected-yn h2 { color: var(--yn-primary); }
-.result-card.selected-gz h2 { color: var(--gz-primary); }
-
-.section-title {
-  font-size: 0.85rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--text-sub);
-  margin-bottom: 12px;
-  padding-bottom: 8px;
-  border-bottom: 2px solid var(--border);
-}
-
-/* ---- Attraction Grid ---- */
-.attraction-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 14px;
-}
-
-.attraction-item {
-  background: #fafaf8;
-  border-radius: var(--radius-sm);
-  padding: 16px;
-  border: 1px solid var(--border);
-  transition: all 0.25s;
-  cursor: default;
-}
-.attraction-item:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-sm);
-  border-color: #d0cec6;
-}
-.attraction-rank {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: #fff;
-  margin-bottom: 8px;
-}
-.attraction-rank.top1 { background: linear-gradient(135deg, #f5a623, #e8961a); }
-.attraction-rank.top2 { background: linear-gradient(135deg, #a0a0a0, #808080); }
-.attraction-rank.top3 { background: linear-gradient(135deg, #c8945c, #a87840); }
-.attraction-rank.normal { background: #ccc; }
-
-.attraction-name {
-  font-weight: 700;
-  font-size: 0.95rem;
-  margin-bottom: 4px;
-}
-.attraction-desc {
-  font-size: 0.8rem;
-  color: var(--text-sub);
-  line-height: 1.4;
-}
-.attraction-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  margin-top: 8px;
-}
-.attraction-tags span {
-  font-size: 0.7rem;
-  padding: 2px 8px;
-  border-radius: 12px;
-  font-weight: 600;
-}
-.selected-yn .attraction-tags span {
-  background: var(--yn-light);
-  color: var(--yn-accent);
-}
-.selected-gz .attraction-tags span {
-  background: var(--gz-light);
-  color: var(--gz-accent);
-}
-
-/* ---- Stats Row ---- */
-.stats-row {
-  display: flex;
-  gap: 14px;
-  flex-wrap: wrap;
-  margin-top: 18px;
-  padding-top: 18px;
-  border-top: 1px solid var(--border);
-}
-.stat-item {
-  flex: 1;
-  min-width: 80px;
-  text-align: center;
-}
-.stat-value {
-  font-size: 1.4rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-}
-.stat-label {
-  font-size: 0.75rem;
-  color: var(--text-sub);
-  margin-top: 2px;
-}
-.selected-yn .stat-value { color: var(--yn-primary); }
-.selected-gz .stat-value { color: var(--gz-primary); }
-
-/* ---- Transport Info ---- */
-.transport-info {
-  background: linear-gradient(135deg, #fdfcf9, #f7f6f1);
-  border-radius: var(--radius-sm);
-  padding: 18px 20px;
-  margin: 20px 0;
-  border: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-.transport-info .ti-icon {
-  font-size: 2rem;
-}
-.transport-info .ti-details h4 {
-  font-weight: 700;
-  font-size: 0.9rem;
-  margin-bottom: 2px;
-}
-.transport-info .ti-details p {
-  font-size: 0.8rem;
-  color: var(--text-sub);
-}
-
-/* ---- Placeholder / Empty State ---- */
-.placeholder-section {
-  text-align: center;
-  padding: 48px 20px;
-  color: var(--text-sub);
-}
-.placeholder-section .ph-icon {
-  font-size: 4rem;
-  opacity: 0.3;
-  margin-bottom: 16px;
-}
-.placeholder-section h3 {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: var(--text);
-  margin-bottom: 6px;
-}
-.placeholder-section p {
-  font-size: 0.9rem;
-}
-
-/* ---- Animations ---- */
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-.fade-in-up {
-  animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-.fade-in-up:nth-child(1) { animation-delay: 0.05s; }
-.fade-in-up:nth-child(2) { animation-delay: 0.1s; }
-.fade-in-up:nth-child(3) { animation-delay: 0.15s; }
-.fade-in-up:nth-child(4) { animation-delay: 0.2s; }
-.fade-in-up:nth-child(5) { animation-delay: 0.25s; }
-.fade-in-up:nth-child(6) { animation-delay: 0.3s; }
-.fade-in-up:nth-child(7) { animation-delay: 0.35s; }
-.fade-in-up:nth-child(8) { animation-delay: 0.4s; }
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
-}
-.result-card.selected-yn { border-left: 4px solid var(--yn-primary); }
-.result-card.selected-gz { border-left: 4px solid var(--gz-primary); }
-
-/* ---- Glow on winner ---- */
-.dest-card.winner {
-  transform: scale(1.03);
-  z-index: 2;
-}
-.dest-card.winner.yn {
-  box-shadow: 0 0 0 4px rgba(232,99,58,0.3), var(--shadow-lg);
-  border-color: var(--yn-accent);
-}
-.dest-card.winner.gz {
-  box-shadow: 0 0 0 4px rgba(45,138,110,0.3), var(--shadow-lg);
-  border-color: var(--gz-accent);
-}
-
-/* ---- Confetti ---- */
-.confetti-container {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 999;
-}
-.confetti-piece {
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  border-radius: 2px;
-  animation: confettiFall 2.5s ease-out forwards;
-}
-@keyframes confettiFall {
-  0%   { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
-  100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
-}
-
-/* ---- Responsive ---- */
-@media (max-width: 640px) {
-  .dest-card { flex: 1 1 100%; max-width: 100%; }
-  .attraction-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
-  .header h1 { font-size: 1.5rem; }
+/* Responsive */
+@media(max-width:600px){
+  .header h1{font-size:1.4rem}
+  .spin-btn{padding:16px 36px;font-size:1rem}
+  .attr-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
+  .budget-grid{grid-template-columns:repeat(2,1fr)}
+  .slot-card{padding:18px 12px}
+  .slot-card .slot-value{font-size:1.2rem}
 }
 </style>
 </head>
 <body>
-
+<div class="container">
 <div class="header">
   <h1>下一站去哪儿？</h1>
-  <p>云南 vs 贵州 &middot; 大数据帮你选</p>
+  <p>随机出行方式 · 智能路线规划 · 经费预算一步到位</p>
 </div>
 
-<!-- Transport Selector -->
-<div class="transport-section" id="transportSection">
-  <button class="transport-btn active" data-transport="highspeed">高铁出行</button>
-  <button class="transport-btn" data-transport="flight">飞机出行</button>
-</div>
-
-<!-- Destination Picker -->
-<div class="picker-container" id="pickerContainer">
-  <div class="dest-card yn" data-dest="yunnan" id="cardYN">
-    <span class="dest-emoji">🏔️</span>
-    <div class="dest-name">云南</div>
-    <div class="dest-subtitle">彩云之南，风花雪月<br>丽江古城 · 玉龙雪山 · 洱海</div>
+<div class="slot-area" id="slotArea">
+  <div class="slot-card" id="slotTransport">
+    <div class="slot-label">出行方式</div>
+    <span class="slot-emoji">🚄</span>
+    <div class="slot-value">高铁</div>
   </div>
-  <div class="dest-card gz" data-dest="guizhou" id="cardGZ">
-    <span class="dest-emoji">⛰️</span>
-    <div class="dest-name">贵州</div>
-    <div class="dest-subtitle">多彩贵州，山水秘境<br>黄果树瀑布 · 千户苗寨 · 梵净山</div>
+  <div class="slot-card" id="slotDest">
+    <div class="slot-label">目的地</div>
+    <span class="slot-emoji">🏔️</span>
+    <div class="slot-value">云南</div>
   </div>
 </div>
 
-<!-- Spin Button -->
-<button class="spin-btn" id="spinBtn">
-  <span class="spin-icon">🎲</span> 开始随机选择
+<button class="spin-btn" id="spinBtn" onclick="startSpin()">
+  <span class="btn-icon">🎲</span> 随机规划我的旅行
 </button>
 
-<!-- Result Area -->
-<div class="result-section" id="resultSection">
-  <div class="placeholder-section" id="placeholderState">
-    <div class="ph-icon">🎯</div>
-    <h3>点击上方按钮，让命运做决定</h3>
-    <p>或者直接点击卡片选择你的目的地</p>
+<div id="resultArea">
+  <div class="empty-state" id="emptyState">
+    <div class="es-icon">🗺️</div>
+    <h3>点击上方按钮，让命运为你规划旅程</h3>
+    <p>系统将随机选择出行方式与目的地，并生成专属行程</p>
   </div>
 </div>
-
+</div>
 <div id="confettiRoot"></div>
-
-
 <script>
-(function() {
+(function(){
   'use strict';
 
-  // ---- DATA: Big data tourist attractions ----
-  const ATTRACTIONS = {
-    yunnan: [
-      { name: '丽江古城', desc: '世界文化遗产，800年历史的水乡古城，纳西族文化发源地。', tags: ['古镇', '世界遗产', '人文'], stats: '年均游客 5400万+' },
-      { name: '玉龙雪山', desc: '北半球最近赤道的雪山，13座雪峰连绵，海拔5596米。', tags: ['雪山', '自然奇观', '登山'], stats: '好评率 96%' },
-      { name: '大理洱海', desc: '高原明珠，形如人耳，环湖120公里，风花雪月四景之首。', tags: ['湖泊', '骑行', '摄影'], stats: '4.8分/5' },
-      { name: '香格里拉普达措', desc: '中国第一个国家公园，高山湖泊与草甸交织的世外桃源。', tags: ['国家公园', '高原', '生态'], stats: '含氧量Top' },
-      { name: '西双版纳热带雨林', desc: '中国唯一热带雨林自然保护区，野象谷邂逅亚洲象。', tags: ['雨林', '民族风情', '动物'], stats: '物种 5000+' },
-      { name: '泸沽湖', desc: '摩梭人"走婚"文化的母系社会遗存，湖水能见度12米。', tags: ['湖泊', '民俗', '秘境'], stats: '透明度 12m' },
-      { name: '石林风景区', desc: '世界自然遗产，2.7亿年喀斯特地貌奇观，"天下第一奇观"。', tags: ['地质奇观', '世界遗产', '自然'], stats: '面积 400km²' },
-      { name: '元阳梯田', desc: '哈尼族1300年农耕杰作，世界文化遗产，光影魔幻天堂。', tags: ['梯田', '世界遗产', '摄影'], stats: '落差 1300m' },
-    ],
-    guizhou: [
-      { name: '黄果树瀑布', desc: '亚洲第一大瀑布，高77.8米宽101米，水帘洞穿越体验。', tags: ['瀑布', '自然奇观', '地标'], stats: '年均游客 3000万+' },
-      { name: '西江千户苗寨', desc: '世界最大苗寨，1400余户苗族聚居，万家灯火夜景震撼。', tags: ['苗寨', '民俗', '夜景'], stats: '户数 1432' },
-      { name: '梵净山', desc: '世界自然遗产，红云金顶直插云霄，佛光与云海奇观。', tags: ['世界遗产', '佛教名山', '云海'], stats: '海拔 2572m' },
-      { name: '荔波小七孔', desc: '"地球腰带上的绿宝石"，水上森林与68级跌水瀑布。', tags: ['喀斯特', '水上森林', '世界遗产'], stats: '含氧量极高' },
-      { name: '镇远古镇', desc: '2200年历史，舞阳河S形穿城，太极古镇，夜游如画。', tags: ['古镇', '历史', '夜景'], stats: '五星景点' },
-      { name: '织金洞', desc: '"溶洞之王"，中国最美六大旅游洞穴之首，洞内奇石万千。', tags: ['溶洞', '地质奇观', '自然'], stats: '长度 12.1km' },
-      { name: '加榜梯田', desc: '苗族人世代耕种，云雾中梯田如链似带，摄影家天堂。', tags: ['梯田', '摄影', '民俗'], stats: '4.9分/5' },
-      { name: '赤水丹霞', desc: '世界自然遗产，红色砂岩与瀑布群交相辉映，壮美如画。', tags: ['丹霞', '世界遗产', '瀑布'], stats: '面积 1200km²' },
-    ]
+  // ===== DATA =====
+  // Transport modes
+  const TRANSPORTS = ['highspeed', 'flight'];
+  const DESTINATIONS = ['yunnan', 'guizhou'];
+
+  const TRANSPORT_INFO = {
+    highspeed: { name: '高铁', icon: '🚄', color: '#3b82f6' },
+    flight: { name: '飞机', icon: '✈️', color: '#8b5cf6' }
   };
 
-  // ---- Transport Info ----
-  const TRANSPORT_INFO = {
-    highspeed: {
-      icon: '🚄',
-      label: '高铁出行',
-      yunnan: { time: '约 7-10 小时（昆明）', cost: '二等座约 ¥600-900', tip: '沪昆高铁直达，沿途风景壮美' },
-      guizhou: { time: '约 5-8 小时（贵阳）', cost: '二等座约 ¥400-700', tip: '沪昆/贵广高铁覆盖，性价比极高' },
+  const DEST_INFO = {
+    yunnan: { name: '云南', icon: '🏔️', emoji: '🌿', css: 'yn-theme', bg: 'yn-bg', color: '#e8633a' },
+    guizhou: { name: '贵州', icon: '⛰️', emoji: '🏞️', css: 'gz-theme', bg: 'gz-bg', color: '#2d8a6e' }
+  };
+
+  // Different attractions per transport mode
+  const ATTRACTIONS = {
+    yunnan: {
+      highspeed: [
+        { name: '丽江古城', desc: '800年水韵古城，纳西族文化发源地，夜宿古城客栈', tags: ['古城','世界遗产','人文'] },
+        { name: '大理洱海', desc: '环湖骑行120公里，风花雪月四景之首，白族三道茶体验', tags: ['湖泊','骑行','民俗'] },
+        { name: '玉龙雪山', desc: '北半球最南的雪山，乘索道登4506米冰川公园', tags: ['雪山','索道','高原'] },
+        { name: '束河古镇', desc: '比丽江更宁静，茶马古道重镇，皮匠手艺传承', tags: ['古镇','手工艺','慢生活'] },
+        { name: '拉市海', desc: '高原湿地候鸟天堂，骑马穿越纳西村落', tags: ['湿地','骑马','生态'] },
+        { name: '白沙壁画', desc: '明代壁画艺术瑰宝，融合汉藏纳西三种风格', tags: ['壁画','历史','艺术'] },
+      ],
+      flight: [
+        { name: '西双版纳热带雨林', desc: '中国唯一热带雨林，野象谷遇亚洲象，傣族泼水狂欢', tags: ['雨林','大象','傣族'] },
+        { name: '香格里拉普达措', desc: '国家公园，属都湖环湖徒步，高山牧场牦牛成群', tags: ['国家公园','徒步','高原'] },
+        { name: '元阳梯田', desc: '哈尼族1300年农耕杰作，日出云海光影绝美', tags: ['梯田','摄影','日出'] },
+        { name: '腾冲热海', desc: '火山地热温泉，泡汤看星空，和顺古镇探访', tags: ['温泉','火山','古镇'] },
+        { name: '泸沽湖', desc: '摩梭女儿国，猪槽船游湖，走婚桥上看日落', tags: ['湖泊','摩梭','日落'] },
+        { name: '梅里雪山', desc: '藏区八大神山之首，日照金山圣景，雨崩徒步', tags: ['雪山','朝圣','徒步'] },
+      ]
     },
-    flight: {
-      icon: '✈️',
-      label: '飞机出行',
-      yunnan: { time: '约 2.5-3.5 小时', cost: '经济舱约 ¥800-1500', tip: '昆明长水机场，航班密集' },
-      guizhou: { time: '约 2-3 小时', cost: '经济舱约 ¥600-1200', tip: '贵阳龙洞堡机场，淡季折扣大' },
+    guizhou: {
+      highspeed: [
+        { name: '黄果树瀑布', desc: '亚洲第一瀑，水帘洞穿越体验，天星桥喀斯特奇观', tags: ['瀑布','水帘洞','喀斯特'] },
+        { name: '西江千户苗寨', desc: '世界最大苗寨，万家灯火夜景，长桌宴酸汤鱼', tags: ['苗寨','夜景','美食'] },
+        { name: '镇远古镇', desc: '2200年历史，舞阳河S形穿城，夜游青龙洞', tags: ['古镇','游船','历史'] },
+        { name: '荔波小七孔', desc: '地球腰带上的绿宝石，水上森林漫步', tags: ['水上森林','翡翠','世界遗产'] },
+        { name: '肇兴侗寨', desc: '侗族大歌发源地，鼓楼风雨桥，蜡染手作体验', tags: ['侗寨','非遗','手作'] },
+        { name: '龙宫', desc: '中国最长水溶洞，乘船穿越地下暗河', tags: ['溶洞','暗河','地底'] },
+      ],
+      flight: [
+        { name: '梵净山', desc: '世界自然遗产，红云金顶直插云霄，万米睡佛奇观', tags: ['世界遗产','云海','佛教'] },
+        { name: '织金洞', desc: '溶洞之王，石笋石幔世界罕见，地下宫殿探险', tags: ['溶洞','探险','地质'] },
+        { name: '赤水丹霞', desc: '中国最大丹霞地貌，赤水大瀑布媲美黄果树', tags: ['丹霞','瀑布','红色'] },
+        { name: '万峰林', desc: '喀斯特峰林壮观，徐霞客赞"天下山峰何其多"', tags: ['峰林','骑行','摄影'] },
+        { name: '马岭河峡谷', desc: '地球最美伤疤，峡谷漂流探险，钙化瀑布群', tags: ['峡谷','漂流','探险'] },
+        { name: '百里杜鹃', desc: '世界最大天然杜鹃花海，春季满山姹紫嫣红', tags: ['花海','春季','摄影'] },
+      ]
     }
   };
 
-  // ---- State ----
-  let selectedTransport = 'highspeed';
-  let selectedDest = null;
+  const ITINERARIES = {
+    yunnan: {
+      highspeed: [
+        { title: '抵达昆明', desc: '高铁抵达昆明南站，入住市区酒店，晚上逛南强街夜市，品尝过桥米线、汽锅鸡', meal: '🍜 晚餐: 过桥米线 + 烧饵块' },
+        { title: '大理古城 & 洱海', desc: '上午高铁/动车至大理(2h)，租电瓶车环洱海西路，打卡S弯、喜洲古镇，尝喜洲粑粑', meal: '🍳 早餐: 小锅米线 / 🥘 午餐: 大理酸辣鱼' },
+        { title: '丽江古城', desc: '上午动车至丽江(1.5h)，下午漫步古城四方街、木府，晚上酒吧街听民谣', meal: '🍲 晚餐: 腊排骨火锅 + 丽江粑粑' },
+        { title: '玉龙雪山', desc: '早起乘索道上雪山，蓝月谷徒步拍照，下午白沙古镇逛壁画', meal: '🥩 午餐: 纳西烤鱼 + 鸡豆凉粉' },
+        { title: '返程', desc: '上午束河古镇最后逛逛，买鲜花饼伴手礼，下午高铁返程', meal: '🎁 伴手礼: 鲜花饼 + 普洱茶' },
+      ],
+      flight: [
+        { title: '抵达昆明', desc: '飞抵昆明长水机场，入住市区，晚上逛金马碧鸡坊、南屏街', meal: '🍜 晚餐: 野生菌火锅 + 烤乳扇' },
+        { title: '飞往西双版纳', desc: '早班机飞版纳(1h)，下午曼听公园+总佛寺，晚上告庄星光夜市', meal: '🥥 午餐: 傣味手抓饭 / 🍢 夜市: 舂鸡脚+老挝冰咖啡' },
+        { title: '热带雨林探险', desc: '中科院热带植物园(或野象谷)，看绞杀榕、跳舞草，傍晚傣族园泼水', meal: '🐟 午餐: 香茅草烤鱼 + 菠萝饭' },
+        { title: '飞往丽江', desc: '上午飞丽江，下午束河古镇发呆晒太阳，晚上大研古城听纳西古乐', meal: '🍲 晚餐: 黑山羊火锅' },
+        { title: '返程', desc: '上午最后逛忠义市场买特产，下午丽江机场飞回', meal: '🎁 伴手礼: 普洱茶饼 + 野生菌干' },
+      ]
+    },
+    guizhou: {
+      highspeed: [
+        { title: '抵达贵阳', desc: '高铁抵达贵阳北站，入住市区，晚上逛甲秀楼、青云路夜市', meal: '🍜 晚餐: 肠旺面 + 丝娃娃' },
+        { title: '黄果树瀑布', desc: '上午高铁至安顺(30min)，全天游览黄果树大瀑布、天星桥、陡坡塘', meal: '🥘 午餐: 花江狗肉/酸汤牛肉' },
+        { title: '西江千户苗寨', desc: '上午高铁至凯里(40min)，转车至苗寨，下午穿苗服拍照，晚上观景台看万家灯火', meal: '🍲 晚餐: 长桌宴 + 酸汤鱼' },
+        { title: '荔波小七孔', desc: '上午高铁至荔波(1h)，漫步水上森林、拉雅瀑布、卧龙潭', meal: '🐟 午餐: 樟江烤鱼 + 虾酸牛肉' },
+        { title: '返程', desc: '上午贵阳逛黔灵山公园看猴子，买茅台/老干妈伴手礼，下午高铁返程', meal: '🎁 伴手礼: 茅台镇酒 + 老干妈 + 刺梨干' },
+      ],
+      flight: [
+        { title: '抵达贵阳', desc: '飞抵贵阳龙洞堡机场，晚上逛花果园"白宫"夜景、二七路小吃街', meal: '🍜 晚餐: 花溪牛肉粉 + 豆腐圆子' },
+        { title: '梵净山朝圣', desc: '上午高铁至铜仁(1h)+转车至梵净山，登红云金顶看云海佛光', meal: '🥘 午餐: 铜仁锅巴粉 + 米豆腐' },
+        { title: '织金洞探险', desc: '上午高铁至织金(1h)，探秘地下溶洞宫殿，下午返回贵阳', meal: '🍲 晚餐: 酸汤鱼 + 小米渣' },
+        { title: '赤水丹霞', desc: '上午高铁至赤水(2h)，赤水大瀑布+佛光岩，傍晚返回', meal: '🐔 午餐: 赤水豆花烤鱼 + 竹筒饭' },
+        { title: '返程', desc: '上午黔灵山看猴子、买特产，下午贵阳机场飞回', meal: '🎁 伴手礼: 茅台冰淇淋 + 刺梨原液' },
+      ]
+    }
+  };
+
+  const BUDGETS = {
+    yunnan: {
+      highspeed: {
+        transport: '¥600-900/人', transportNum: 750,
+        hotel: '¥150-250/晚', hotelNum: 200,
+        tickets: '¥300-500/人', ticketsNum: 400,
+        food: '¥80-150/天', foodNum: 115,
+        total: '¥2,500-4,000/人', totalNum: 3250
+      },
+      flight: {
+        transport: '¥800-1,500/人', transportNum: 1150,
+        hotel: '¥180-300/晚', hotelNum: 240,
+        tickets: '¥350-600/人', ticketsNum: 475,
+        food: '¥100-180/天', foodNum: 140,
+        total: '¥3,500-5,500/人', totalNum: 4500
+      }
+    },
+    guizhou: {
+      highspeed: {
+        transport: '¥400-700/人', transportNum: 550,
+        hotel: '¥120-200/晚', hotelNum: 160,
+        tickets: '¥250-450/人', ticketsNum: 350,
+        food: '¥60-120/天', foodNum: 90,
+        total: '¥1,800-3,200/人', totalNum: 2500
+      },
+      flight: {
+        transport: '¥600-1,200/人', transportNum: 900,
+        hotel: '¥150-250/晚', hotelNum: 200,
+        tickets: '¥300-500/人', ticketsNum: 400,
+        food: '¥80-150/天', foodNum: 115,
+        total: '¥2,800-4,500/人', totalNum: 3650
+      }
+    }
+  };
+
+  // ===== State =====
   let isSpinning = false;
 
-  // ---- DOM ----
+  // ===== DOM refs =====
   const spinBtn = document.getElementById('spinBtn');
-  const cardYN = document.getElementById('cardYN');
-  const cardGZ = document.getElementById('cardGZ');
-  const resultSection = document.getElementById('resultSection');
-  const transportSection = document.getElementById('transportSection');
+  const resultArea = document.getElementById('resultArea');
+  const slotTransport = document.getElementById('slotTransport');
+  const slotDest = document.getElementById('slotDest');
   const confettiRoot = document.getElementById('confettiRoot');
 
-  // ---- Transport Selection ----
-  transportSection.addEventListener('click', function(e) {
-    const btn = e.target.closest('.transport-btn');
-    if (!btn) return;
-    document.querySelectorAll('.transport-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    selectedTransport = btn.dataset.transport;
-    if (selectedDest) {
-      renderResult(selectedDest);
-    }
-  });
+  const TRANSPORT_EMOJIS = { highspeed: '🚄', flight: '✈️' };
+  const TRANSPORT_NAMES = { highspeed: '高铁', flight: '飞机' };
+  const DEST_NAMES = { yunnan: '云南', guizhou: '贵州' };
+  const DEST_EMOJIS = { yunnan: '🏔️', guizhou: '⛰️' };
 
-  // ---- Click Card to Select ----
-  cardYN.addEventListener('click', function() { selectDestination('yunnan'); });
-  cardGZ.addEventListener('click', function() { selectDestination('guizhou'); });
-
-  // ---- Random Spin ----
-  spinBtn.addEventListener('click', function() {
+  // ===== Spin =====
+  window.startSpin = function() {
     if (isSpinning) return;
     isSpinning = true;
     spinBtn.disabled = true;
     spinBtn.classList.add('spinning');
 
-    // Add spinning class to both cards
-    cardYN.classList.add('spinning');
-    cardGZ.classList.add('spinning');
+    // Final random picks
+    const finalTransport = TRANSPORTS[Math.floor(Math.random() * 2)];
+    const finalDest = DESTINATIONS[Math.floor(Math.random() * 2)];
 
-    // Random toggle during spin
-    let toggleCount = 0;
-    const maxToggles = 12;
-    const spinInterval = setInterval(function() {
-      cardYN.classList.toggle('winner');
-      cardGZ.classList.toggle('winner');
-      toggleCount++;
-      if (toggleCount >= maxToggles) {
-        clearInterval(spinInterval);
-        // Final pick
-        const rand = Math.random();
-        const dest = rand < 0.5 ? 'yunnan' : 'guizhou';
-        finishSpin(dest);
+    // Animate slots
+    slotTransport.classList.add('shaking');
+    slotDest.classList.add('shaking');
+
+    let tick = 0;
+    const maxTicks = 16;
+    const interval = setInterval(function() {
+      const t = Math.floor(Math.random() * 2);
+      const d = Math.floor(Math.random() * 2);
+      slotTransport.querySelector('.slot-emoji').textContent = TRANSPORT_EMOJIS[TRANSPORTS[t]];
+      slotTransport.querySelector('.slot-value').textContent = TRANSPORT_NAMES[TRANSPORTS[t]];
+      slotDest.querySelector('.slot-emoji').textContent = DEST_EMOJIS[DESTINATIONS[d]];
+      slotDest.querySelector('.slot-value').textContent = DEST_NAMES[DESTINATIONS[d]];
+      tick++;
+      if (tick >= maxTicks) {
+        clearInterval(interval);
+        // Set final values
+        slotTransport.querySelector('.slot-emoji').textContent = TRANSPORT_EMOJIS[finalTransport];
+        slotTransport.querySelector('.slot-value').textContent = TRANSPORT_NAMES[finalTransport];
+        slotDest.querySelector('.slot-emoji').textContent = DEST_EMOJIS[finalDest];
+        slotDest.querySelector('.slot-value').textContent = DEST_NAMES[finalDest];
+        slotTransport.classList.remove('shaking');
+        slotDest.classList.remove('shaking');
+        // Render result
+        renderResult(finalTransport, finalDest);
+        launchConfetti();
+        isSpinning = false;
+        spinBtn.disabled = false;
+        spinBtn.classList.remove('spinning');
       }
-    }, 80);
-  });
+    }, 70);
+  };
 
-  function finishSpin(dest) {
-    cardYN.classList.remove('spinning', 'winner');
-    cardGZ.classList.remove('spinning', 'winner');
-    selectDestination(dest);
-    isSpinning = false;
-    spinBtn.disabled = false;
-    spinBtn.classList.remove('spinning');
-    launchConfetti();
-  }
+  // ===== Render =====
+  function renderResult(transport, dest) {
+    const tInfo = TRANSPORT_INFO[transport];
+    const dInfo = DEST_INFO[dest];
+    const attrs = ATTRACTIONS[dest][transport];
+    const plan = ITINERARIES[dest][transport];
+    const budget = BUDGETS[dest][transport];
 
-  // ---- Select & Render ----
-  function selectDestination(dest) {
-    selectedDest = dest;
-    // Highlight winner
-    cardYN.classList.remove('winner');
-    cardGZ.classList.remove('winner');
-    if (dest === 'yunnan') cardYN.classList.add('winner');
-    else cardGZ.classList.add('winner');
+    let h = '<div class="result-card '+dInfo.css+'">';
 
-    // Remove winner after delay
-    setTimeout(function() {
-      cardYN.classList.remove('winner');
-      cardGZ.classList.remove('winner');
-    }, 2000);
+    // Banner
+    h += '<div class="result-banner '+dInfo.bg+'">';
+    h += '<span class="rb-icon">'+dInfo.icon+'</span>';
+    h += '<div class="rb-info">';
+    h += '<h2>'+dInfo.name+' · '+tInfo.name+'出行</h2>';
+    h += '<div class="rb-tags">';
+    h += '<span class="rb-tag">'+tInfo.icon+' '+tInfo.name+'出发</span>';
+    h += '<span class="rb-tag">'+dInfo.emoji+' 5天4晚</span>';
+    h += '<span class="rb-tag">📅 推荐季节: '+(dest==='yunnan'?'3-5月/9-11月':'4-6月/9-10月')+'</span>';
+    h += '</div></div></div>';
 
-    renderResult(dest);
+    // Body
+    h += '<div class="result-body">';
+
+    // Transport info
+    h += '<div class="section-title">🚗 出行信息</div>';
+    h += '<div class="transport-bar">';
+    h += '<span class="tb-icon">'+tInfo.icon+'</span>';
+    h += '<div class="tb-details">';
+    h += '<h4>'+tInfo.name+' · '+dInfo.name+'</h4>';
+    h += '<p>'+budget.transport+' | 建议提前15-30天订票更划算</p>';
+    h += '</div></div>';
+
+    // Attractions (transport-specific)
+    h += '<div class="section-title">🏆 '+tInfo.name+'出行 · 精选景点 ('+attrs.length+'个)</div>';
+    h += '<div class="attr-grid">';
+    attrs.forEach(function(a,i){
+      let rc = i===0?'r1':i===1?'r2':i===2?'r3':'';
+      h += '<div class="attr-item">';
+      h += '<div class="attr-rank '+rc+'">'+(i+1)+'</div>';
+      h += '<div class="attr-name">'+a.name+'</div>';
+      h += '<div class="attr-desc">'+a.desc+'</div>';
+      h += '<div class="attr-tags">';
+      a.tags.forEach(function(t){ h += '<span>'+t+'</span>'; });
+      h += '</div></div>';
+    });
+    h += '</div>';
+
+    // Itinerary
+    h += '<div class="section-title">🗓️ 5天4晚路线规划</div>';
+    h += '<div class="itinerary">';
+    plan.forEach(function(day,i){
+      h += '<div class="it-day">';
+      h += '<div class="it-day-num">Day '+(i+1)+'</div>';
+      h += '<div class="it-day-content">';
+      h += '<h5>'+day.title+'</h5>';
+      h += '<p>'+day.desc+'</p>';
+      if(day.meal) h += '<div class="it-meal">'+day.meal+'</div>';
+      h += '</div></div>';
+    });
+    h += '</div>';
+
+    // Budget
+    h += '<div class="section-title">💰 经费预算 (人均)</div>';
+    h += '<div class="budget-grid">';
+    h += '<div class="budget-item"><div class="bi-amount">'+budget.transport+'</div><div class="bi-label">🚗 往返交通</div></div>';
+    h += '<div class="budget-item"><div class="bi-amount">'+budget.hotel+'</div><div class="bi-label">🏨 住宿/晚</div></div>';
+    h += '<div class="budget-item"><div class="bi-amount">'+budget.tickets+'</div><div class="bi-label">🎫 门票合计</div></div>';
+    h += '<div class="budget-item"><div class="bi-amount">'+budget.food+'</div><div class="bi-label">🍽️ 餐饮/天</div></div>';
+    h += '</div>';
+    h += '<div class="budget-total">';
+    h += '<div class="bt-label">5天4晚预估总费用 (人均)</div>';
+    h += '<div class="bt-amount">'+budget.total+'</div>';
+    h += '</div>';
+
+    h += '</div></div>';
+
+    resultArea.innerHTML = h;
 
     // Scroll to result on mobile
     if (window.innerWidth < 768) {
-      resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setTimeout(function(){
+        resultArea.querySelector('.result-card').scrollIntoView({behavior:'smooth',block:'start'});
+      }, 100);
     }
   }
 
-  function renderResult(dest) {
-    const transport = TRANSPORT_INFO[selectedTransport];
-    const tInfo = transport[dest];
-    const attrs = ATTRACTIONS[dest];
-    const destName = dest === 'yunnan' ? '云南' : '贵州';
-    const destIcon = dest === 'yunnan' ? '🏔️' : '⛰️';
-    const cardClass = dest === 'yunnan' ? 'selected-yn' : 'selected-gz';
-
-    let html = '<div class="result-card ' + cardClass + ' fade-in-up">';
-
-    // Header
-    html += '<div class="result-header">';
-    html += '<span class="icon">' + destIcon + '</span>';
-    html += '<div class="info">';
-    html += '<h2>' + destName + ' &middot; 大数据推荐</h2>';
-    html += '<span class="transport-tag">' + transport.icon + ' ' + transport.label + '</span>';
-    html += '</div></div>';
-
-    // Transport Info
-    html += '<div class="transport-info">';
-    html += '<span class="ti-icon">' + transport.icon + '</span>';
-    html += '<div class="ti-details">';
-    html += '<h4>' + transport.label + '：' + tInfo.time + '</h4>';
-    html += '<p>' + tInfo.cost + ' &middot; ' + tInfo.tip + '</p>';
-    html += '</div></div>';
-
-    // Attractions
-    html += '<div class="section-title">热门景点排行（基于搜索热度 &middot; 好评率 &middot; 社交媒体提及量）</div>';
-    html += '<div class="attraction-grid">';
-
-    attrs.forEach(function(attr, i) {
-      let rankClass = 'normal';
-      if (i === 0) rankClass = 'top1';
-      else if (i === 1) rankClass = 'top2';
-      else if (i === 2) rankClass = 'top3';
-
-      html += '<div class="attraction-item fade-in-up">';
-      html += '<div class="attraction-rank ' + rankClass + '">' + (i + 1) + '</div>';
-      html += '<div class="attraction-name">' + attr.name + '</div>';
-      html += '<div class="attraction-desc">' + attr.desc + '</div>';
-      html += '<div class="attraction-tags">';
-      attr.tags.forEach(function(t) {
-        html += '<span>' + t + '</span>';
-      });
-      html += '</div></div>';
-    });
-
-    html += '</div>';
-
-    // Stats Row
-    html += '<div class="stats-row">';
-    html += '<div class="stat-item"><div class="stat-value">' + attrs.length + '+</div><div class="stat-label">热门景点</div></div>';
-    html += '<div class="stat-item"><div class="stat-value">4.7</div><div class="stat-label">综合评分/5</div></div>';
-    html += '<div class="stat-item"><div class="stat-value">' + (dest === 'yunnan' ? '1.2亿' : '8400万') + '</div><div class="stat-label">年均游客</div></div>';
-    html += '<div class="stat-item"><div class="stat-value">' + (dest === 'yunnan' ? '16' : '9') + '</div><div class="stat-label">5A级景区</div></div>';
-    html += '</div>';
-
-    html += '</div>';
-
-    resultSection.innerHTML = html;
-  }
-
-  // ---- Confetti ----
+  // ===== Confetti =====
   function launchConfetti() {
-    var frag = document.createDocumentFragment();
-    var colors = ['#e8633a', '#2d8a6e', '#f5a623', '#6a9bcc', '#e06090', '#9b59b6', '#f39c12', '#1abc9c'];
-    for (var i = 0; i < 60; i++) {
-      var piece = document.createElement('div');
-      piece.className = 'confetti-piece';
-      piece.style.left = Math.random() * 100 + '%';
-      piece.style.top = -(Math.random() * 20) + 'px';
-      piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-      piece.style.animationDelay = Math.random() * 0.8 + 's';
-      piece.style.animationDuration = (Math.random() * 2 + 2) + 's';
-      piece.style.width = (Math.random() * 8 + 6) + 'px';
-      piece.style.height = (Math.random() * 8 + 6) + 'px';
-      frag.appendChild(piece);
+    const frag = document.createDocumentFragment();
+    const colors = ['#e8633a','#2d8a6e','#f5a623','#6a9bcc','#e06090','#9b59b6','#f39c12','#1abc9c'];
+    for (let i=0; i<50; i++) {
+      const p = document.createElement('div'); p.className='c-piece';
+      p.style.left = Math.random()*100+'%';
+      p.style.top = -(Math.random()*20)+'px';
+      p.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
+      p.style.animationDelay = Math.random()*0.6+'s';
+      p.style.animationDuration = (Math.random()*2+2.2)+'s';
+      p.style.width = (Math.random()*8+5)+'px';
+      p.style.height = (Math.random()*8+5)+'px';
+      frag.appendChild(p);
     }
     confettiRoot.innerHTML = '';
     confettiRoot.appendChild(frag);
-    setTimeout(function() {
-      confettiRoot.innerHTML = '';
-    }, 3500);
+    setTimeout(function(){ confettiRoot.innerHTML = ''; }, 3500);
   }
 
 })();
-</script>
-</body>
-</html>
+</script></body></html>
